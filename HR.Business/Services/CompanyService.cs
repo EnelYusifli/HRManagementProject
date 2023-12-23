@@ -16,15 +16,15 @@ public class CompanyService : ICompanyService
         Company? dbCompany =
              HRDbContext.Companies.Find(c => c.Name.ToLower() == companyName.ToLower());
         if (dbCompany is not null)
-            throw new AlreadyExistException($"{dbCompany.Name} is already exist");
+            throw new AlreadyExistException($"{dbCompany.Name.ToUpper()} is already exist");
         Company company = new(companyName);
         HRDbContext.Companies.Add(company);
-        Console.WriteLine($"{company.Name} has been successfully created \n");
+        Console.WriteLine($"The new company- {company.Name.ToUpper()} has been successfully created \n");
     }
 
     public void GetAllDepartments(string? companyName)
     {
-        int countForDepartmentlessCompany = 0;
+        int counter = 0;
         if (String.IsNullOrEmpty(companyName))
             throw new ArgumentNullException();
         Company? dbCompany =
@@ -33,15 +33,23 @@ public class CompanyService : ICompanyService
         {
             foreach ( var department in HRDbContext.Departments)
             {
-                if (department.Company==dbCompany.Name)
+                if (department.Company.ToLower() == dbCompany.Name.ToLower())
                 {
-                    countForDepartmentlessCompany++;
-                Console.WriteLine($"{department.Name} Department is in {companyName} Company");
+                    counter++;
+                Console.WriteLine($"{department.Name.ToUpper()} Department is in {companyName.ToUpper()} Company");
                 }
             }
-               if(countForDepartmentlessCompany==0) Console.WriteLine($"{companyName} company does not have any department");
+               if(counter==0) Console.WriteLine($"{companyName} company does not have any department");
         }
-        else throw new NotFoundException($"{companyName} Company cannot be found");
+        else throw new NotFoundException($"{companyName.ToUpper()} Company cannot be found");
+    }
+    public void ShowAll(string companytName)
+    {
+        foreach (var department in HRDbContext.Departments)
+        {
+            if (department.Company.ToLower() == companytName.ToLower())
+                Console.WriteLine($"{department.Id} {department.Name}");
+        }
     }
 
 }

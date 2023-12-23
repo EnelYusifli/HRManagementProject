@@ -16,9 +16,20 @@ public class EmployeeService : IEmployeeService
             throw new ArgumentNullException();
         if(employeeSalary <= 0) 
             throw new ArgumentOutOfRangeException();
+        Company? dbCompany =
+       HRDbContext.Companies.Find(c => c.Name.ToLower() == companyName.ToLower());
+        if (dbCompany is null || companyName.ToLower() != dbCompany.Name.ToLower())
+            throw new NotFoundException($"{companyName.ToUpper()} Company cannot be found");
         Department? dbDepartment =
        HRDbContext.Departments.Find(d => d.Name.ToLower() == departmentName.ToLower());
-        if (dbDepartment is null || companyName != dbDepartment.Company)
-            throw new NotFoundException($"{departmentName} department cannot be found in {companyName} Company");
+        if (dbDepartment is null || companyName.ToLower() != dbDepartment.Company.ToLower())
+            throw new NotFoundException($"{departmentName.ToUpper()} department cannot be found in {companyName.ToUpper()} Company");
+        if(dbDepartment.currentEmployeeCount==dbDepartment.EmployeeLimit)
+            throw new AlreadyFullException($"{departmentName.ToUpper()} Department is already full");
+        Employee employee = new Employee(employeeName, employeeSurname, companyName, departmentName, employeeSalary);
+        HRDbContext.Employees.Add(employee);
+        dbDepartment.currentEmployeeCount++;
+        Console.WriteLine($"The new employee- {employee.Name.ToUpper()} has been successfully created \n");
+
     }
 }

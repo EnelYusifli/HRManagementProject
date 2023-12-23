@@ -9,6 +9,7 @@ public class Department:IEntity
     public int EmployeeLimit { get; set; }
     public string Company { get; set; }
     private static int id;
+    public int currentEmployeeCount;
 
     public Department(string name, int employeeLimit, string company)
     {
@@ -16,5 +17,6 @@ public class Department:IEntity
         Name = name;
         EmployeeLimit = employeeLimit;
         Company = company;
+        currentEmployeeCount = 0;
     }
 }

@@ -4,5 +4,6 @@ public interface ICompanyService
 {
     void Create(string? companyName, string companyDescription);
     void GetAllDepartments(string? companyName);
+    void ShowAll(string companyName);
 
 }
