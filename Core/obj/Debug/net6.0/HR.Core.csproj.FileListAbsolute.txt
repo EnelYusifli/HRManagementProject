@@ -1,0 +1,11 @@
+C:\Users\HP\source\repos\HR Management\Core\bin\Debug\net6.0\HR.Core.deps.json
+C:\Users\HP\source\repos\HR Management\Core\bin\Debug\net6.0\HR.Core.dll
+C:\Users\HP\source\repos\HR Management\Core\bin\Debug\net6.0\HR.Core.pdb
+C:\Users\HP\source\repos\HR Management\Core\obj\Debug\net6.0\HR.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\HP\source\repos\HR Management\Core\obj\Debug\net6.0\HR.Core.AssemblyInfoInputs.cache
+C:\Users\HP\source\repos\HR Management\Core\obj\Debug\net6.0\HR.Core.AssemblyInfo.cs
+C:\Users\HP\source\repos\HR Management\Core\obj\Debug\net6.0\HR.Core.csproj.CoreCompileInputs.cache
+C:\Users\HP\source\repos\HR Management\Core\obj\Debug\net6.0\HR.Core.dll
+C:\Users\HP\source\repos\HR Management\Core\obj\Debug\net6.0\refint\HR.Core.dll
+C:\Users\HP\source\repos\HR Management\Core\obj\Debug\net6.0\HR.Core.pdb
+C:\Users\HP\source\repos\HR Management\Core\obj\Debug\net6.0\ref\HR.Core.dll
