@@ -31,19 +31,30 @@ public class DepartmentService : IDepartmentService
     {
         if (String.IsNullOrEmpty(departmentName))
             throw new ArgumentNullException();
+        if (String.IsNullOrEmpty(companyName))
+            throw new ArgumentNullException();
         if(employeeId < 0) 
             throw new ArgumentOutOfRangeException();
         int counter = 0;
+        Department? dbDepartment =
+            HRDbContext.Departments.Find(d => d.Name.ToLower() == departmentName.ToLower());
+        if (dbDepartment is null)
+            throw new NotFoundException($"{departmentName.ToUpper()} cannot be found");
+        Company? dbCompany =
+            HRDbContext.Companies.Find(c => c.Name.ToLower() == companyName.ToLower());
+        if (dbCompany is null)
+            throw new NotFoundException($"{companyName.ToUpper()} cannot be found");
         foreach (var employee in HRDbContext.Employees)
         {
-            if (employee.Id == employeeId && employee.Company.ToLower()==companyName.ToLower() && employee.Department.ToLower() != departmentName.ToLower())
+            if (employee.Id == employeeId && employeeName.ToLower()==employee.Name.ToLower() && employee.Company==dbCompany && employee.Department != dbDepartment)
             {
                 counter++;
+                employee.Department = dbDepartment;
                 HRDbContext.Employees.Add(employee);
-                Console.WriteLine($"The new employee- {employee.Name.ToUpper()} has been successfully created \n");
+                Console.WriteLine($"The new employee- {employee.Name.ToUpper()} has been successfully added \n");
                 break;
             }
-            if (employee.Id == employeeId && employee.Company.ToLower() == companyName.ToLower() && employee.Department.ToLower() == departmentName.ToLower())
+            else if (employee.Id == employeeId  && employeeName == employee.Name && employee.Company == dbCompany && employee.Department ==dbDepartment)
             {
                 counter++;
                 throw new AlreadyExistException($"Employee {employeeName.ToUpper()} is already in {departmentName.ToUpper()} Department");
@@ -56,22 +67,42 @@ public class DepartmentService : IDepartmentService
 
     }
 
-    public void GetDepartmentEmployees(string departmentName)
+    public void GetDepartmentEmployees(string departmentName, string companyName)
     {
-        throw new NotImplementedException();
-    }
-
-    public void UpdateDepartment(string oldDepartmentName, string newDepartmentName, int newEmployeeLimit)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void ShowAll(string departmentName)
-    {
+        Department? dbDepartment =
+           HRDbContext.Departments.Find(d => d.Name.ToLower() == departmentName.ToLower());
+        if (dbDepartment is null)
+            throw new NotFoundException($"{departmentName.ToUpper()} cannot be found");
+        Company? dbCompany =
+           HRDbContext.Companies.Find(c => c.Name.ToLower() == companyName.ToLower());
+        if (dbCompany is null)
+            throw new NotFoundException($"{companyName.ToUpper()} cannot be found");
         foreach (var employee in HRDbContext.Employees)
         {
-            if (employee.Department.ToLower() == departmentName.ToLower())
-                Console.WriteLine($"{employee.Id} {employee.Name}");
+            if (employee.Department == dbDepartment)
+                Console.WriteLine($"Id: {employee.Id}\n Name: {employee.Name}");
         }
+
     }
+
+    public void UpdateDepartment(string oldDepartmentName, string newDepartmentName,string companyName, int newEmployeeLimit)
+    {
+        Department? dbOldDepartment =
+          HRDbContext.Departments.Find(d => d.Name.ToLower() == oldDepartmentName.ToLower());
+        if (dbOldDepartment is null)
+            throw new NotFoundException($"{oldDepartmentName.ToUpper()} cannot be found");
+        Department? dbNewDepartment =
+          HRDbContext.Departments.Find(d => d.Name.ToLower() == newDepartmentName.ToLower());
+        if (dbNewDepartment is not null)
+            throw new AlreadyExistException($"{newDepartmentName.ToUpper()} department is already exist");
+        Company? dbCompany =
+           HRDbContext.Companies.Find(c => c.Name.ToLower() == companyName.ToLower());
+        if (dbCompany is null)
+            throw new NotFoundException($"{companyName.ToUpper()} cannot be found");
+        dbOldDepartment.Name = newDepartmentName;
+
+
+    }
+
+   
 }

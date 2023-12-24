@@ -27,6 +27,8 @@ public class EmployeeService : IEmployeeService
         if(dbDepartment.currentEmployeeCount==dbDepartment.EmployeeLimit)
             throw new AlreadyFullException($"{departmentName.ToUpper()} Department is already full");
         Employee employee = new Employee(employeeName, employeeSurname, companyName, departmentName, employeeSalary);
+        employee.Department=dbDepartment;
+        employee.Company=dbCompany;
         HRDbContext.Employees.Add(employee);
         dbDepartment.currentEmployeeCount++;
         Console.WriteLine($"The new employee- {employee.Name.ToUpper()} has been successfully created \n");

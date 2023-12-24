@@ -1,4 +1,6 @@
-﻿namespace HR.Business.Interfaces;
+﻿using HR.Core.Entities;
+
+namespace HR.Business.Interfaces;
 
 public interface IEmployeeService
 {
