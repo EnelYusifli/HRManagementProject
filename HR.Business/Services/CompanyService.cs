@@ -9,7 +9,7 @@ namespace HR.Business.Services;
 
 public class CompanyService : ICompanyService
 {
-    public void Create(string? companyName, string companyDescription)
+    public void Create(string? companyName, string? companyDescription)
     {
         if (String.IsNullOrEmpty(companyName))
             throw new ArgumentNullException();
@@ -36,7 +36,7 @@ public class CompanyService : ICompanyService
                 if (department.Company.ToLower() == dbCompany.Name.ToLower())
                 {
                     counter++;
-                Console.WriteLine($"{department.Id}){department.Name.ToUpper()} Department is in {companyName.ToUpper()} Company");
+                Console.WriteLine($" Departments in {companyName.ToUpper()} Company:\n{department.Id}){department.Name.ToUpper()} Department\n");
                 }
             }
                if(counter==0) Console.WriteLine($"{companyName} company does not have any department");

@@ -11,10 +11,11 @@ public class Employee:IEntity
     public Department? Department { get; set; }
     public Company? Company { get; set; }
     public int Salary {  get; set; }
+    public string Position {  get; set; }
     public bool IsDeleted { get; set; }
     private static int id;
 
-    public Employee(string name, string surname,Company company, Department department, int salary)
+    public Employee(string name, string surname,Company company, Department department, int salary, string position)
     {
         Id = id++;
         Name = name;
@@ -22,7 +23,7 @@ public class Employee:IEntity
         Department = department;
         Company = company;
         Salary = salary;
+        Position = position;
         IsDeleted = false;
-
     }
 }

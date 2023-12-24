@@ -14,7 +14,7 @@ public class DepartmentService : IDepartmentService
         companyService = new CompanyService();
     }
 
-    public void Create(string? departmentName, string departmentDescription, string company, int employeeLimit)
+    public void Create(string? departmentName, string? departmentDescription, string? company, int employeeLimit)
     {
         if (String.IsNullOrEmpty(departmentName))
          throw new ArgumentNullException();
@@ -22,8 +22,12 @@ public class DepartmentService : IDepartmentService
          throw new ArgumentNullException();
         Department? dbDepartment =
             HRDbContext.Departments.Find(d => d.Name.ToLower() == departmentName.ToLower());
-        if (dbDepartment is not null)
-         throw new AlreadyExistException($"{dbDepartment.Name.ToUpper()} is already exist");
+        Company? dbCompany =
+            HRDbContext.Companies.Find(c => c.Name.ToLower() == company.ToLower());
+        if (dbCompany is null)
+            throw new NotFoundException($"{company.ToUpper()} Company cannot be found");
+        if (dbDepartment is not null && dbDepartment.Company==company)
+         throw new AlreadyExistException($"{dbDepartment.Name.ToUpper()} Department is already exist");
         if (employeeLimit < 4)
          throw new LessThanMinimumException($"The {departmentName.ToUpper()} department should have at least 4 employees ");
         Department department = new(departmentName, employeeLimit, company);
@@ -32,7 +36,7 @@ public class DepartmentService : IDepartmentService
 
     }
     //burda employeeId de elave edirem cunki eyni adli bir nece nefer ola biler.
-    public void AddEmployeeToDepartment(string departmentName,string companyName, string employeeName,int employeeId=-1)
+    public void AddEmployeeToDepartment(string? departmentName,string? companyName,int employeeId=-1)
     {
         if (String.IsNullOrEmpty(departmentName))
             throw new ArgumentNullException();
@@ -44,16 +48,16 @@ public class DepartmentService : IDepartmentService
         Department? dbDepartment =
             HRDbContext.Departments.Find(d => d.Name.ToLower() == departmentName.ToLower());
         if (dbDepartment is null)
-            throw new NotFoundException($"{departmentName.ToUpper()} cannot be found");
+            throw new NotFoundException($"{departmentName.ToUpper()} Department cannot be found");
         Company? dbCompany =
             HRDbContext.Companies.Find(c => c.Name.ToLower() == companyName.ToLower());
         if (dbCompany is null)
-            throw new NotFoundException($"{companyName.ToUpper()} cannot be found");
+            throw new NotFoundException($"{companyName.ToUpper()} Company cannot be found");
         if (dbDepartment.currentEmployeeCount == dbDepartment.EmployeeLimit)
             throw new AlreadyFullException($"{departmentName.ToUpper()} Department is already full");
         foreach (var employee in HRDbContext.Employees)
         {
-            if (employee.Id == employeeId && employeeName.ToLower()==employee.Name.ToLower() && employee.Company==dbCompany && employee.Department != dbDepartment)
+            if (employee.Id == employeeId && employee.Company==dbCompany && employee.Department != dbDepartment)
             {
                 counter++;
                 employee.Department = dbDepartment;
@@ -61,21 +65,26 @@ public class DepartmentService : IDepartmentService
                 Console.WriteLine($"The new employee- {employee.Name.ToUpper()} has been successfully added \n");
                 break;
             }
-            else if (employee.Id == employeeId  && employeeName == employee.Name && employee.Company == dbCompany && employee.Department ==dbDepartment)
+            else if (employee.Id == employeeId  && employee.Company == dbCompany && employee.Department ==dbDepartment)
             {
                 counter++;
-                throw new AlreadyExistException($"Employee {employeeName.ToUpper()} is already in {departmentName.ToUpper()} Department");
+                throw new AlreadyExistException($"Employee {employee.Name} is already in {departmentName.ToUpper()} Department");
                 
             }
         }
         if(counter==0)
-            throw new NotFoundException($"Employee {employeeName.ToUpper()} cannot be found");
+            throw new NotFoundException($"Employee cannot be found");
 
 
     }
 
-    public void GetDepartmentEmployees(string departmentName, string companyName)
+    public void GetDepartmentEmployees(string? departmentName, string? companyName)
     {
+
+        if (String.IsNullOrEmpty(departmentName))
+            throw new ArgumentNullException();
+        if (String.IsNullOrEmpty(companyName))
+            throw new ArgumentNullException();
         Department? dbDepartment =
            HRDbContext.Departments.Find(d => d.Name.ToLower() == departmentName.ToLower());
         if (dbDepartment is null)
@@ -87,13 +96,19 @@ public class DepartmentService : IDepartmentService
         foreach (var employee in HRDbContext.Employees)
         {
             if (employee.Department == dbDepartment)
-                Console.WriteLine($"Id: {employee.Id}\n Name: {employee.Name}");
+                Console.WriteLine($"Employees:\n Id: {employee.Id}\n Name: {employee.Name}");
         }
 
     }
 
-    public void UpdateDepartment(string oldDepartmentName, string newDepartmentName,string companyName, int newEmployeeLimit)
+    public void UpdateDepartment(string? oldDepartmentName, string? newDepartmentName,string? companyName, int newEmployeeLimit)
     {
+        if (String.IsNullOrEmpty(oldDepartmentName))
+            throw new ArgumentNullException(); 
+        if (String.IsNullOrEmpty(newDepartmentName))
+            throw new ArgumentNullException();
+        if (String.IsNullOrEmpty(companyName))
+            throw new ArgumentNullException();
         Department? dbOldDepartment =
           HRDbContext.Departments.Find(d => d.Name.ToLower() == oldDepartmentName.ToLower());
         if (dbOldDepartment is null)
@@ -107,6 +122,8 @@ public class DepartmentService : IDepartmentService
         if (dbCompany is null)
             throw new NotFoundException($"{companyName.ToUpper()} cannot be found");
         dbOldDepartment.Name = newDepartmentName;
+        dbOldDepartment.EmployeeLimit=newEmployeeLimit;
+        Console.WriteLine($"{newDepartmentName} has been successfully updated");
 
 
     }
