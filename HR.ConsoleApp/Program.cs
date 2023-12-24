@@ -6,9 +6,15 @@ DepartmentService departmentService= new DepartmentService();
 departmentService.Create("ux", "", "code", 4);
 departmentService.Create("ui", "", "code", 4);
 EmployeeService employeeService= new EmployeeService();
-employeeService.Create("Enel", "", 10, "code", "ux");
-departmentService.AddEmployeeToDepartment("ui", "", "eNel", 0);
+employeeService.Create("Enel", "a", 10, "code", "ux");
+employeeService.Create("Aylin", "a", 10, "code", "ux");
+employeeService.Create("Ramin", "a", 10, "code", "ux");
+employeeService.Create("Jale", "a", 10, "code", "ux");
+departmentService.AddEmployeeToDepartment("ui", "code", "eNel", 0);
+departmentService.AddEmployeeToDepartment("ui", "code", "jale", 3);
 departmentService.GetDepartmentEmployees("ui", "code");
-//o biri dep den silmelidir
+Console.WriteLine("------------");
+departmentService.GetDepartmentEmployees("ux", "code");
+
 
 

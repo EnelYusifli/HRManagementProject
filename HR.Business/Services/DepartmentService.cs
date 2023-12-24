@@ -8,7 +8,12 @@ namespace HR.Business.Services;
 
 public class DepartmentService : IDepartmentService
 {
-    
+     public ICompanyService companyService { get; }
+    public DepartmentService()
+    {
+        companyService = new CompanyService();
+    }
+
     public void Create(string? departmentName, string departmentDescription, string company, int employeeLimit)
     {
         if (String.IsNullOrEmpty(departmentName))
@@ -44,13 +49,15 @@ public class DepartmentService : IDepartmentService
             HRDbContext.Companies.Find(c => c.Name.ToLower() == companyName.ToLower());
         if (dbCompany is null)
             throw new NotFoundException($"{companyName.ToUpper()} cannot be found");
+        if (dbDepartment.currentEmployeeCount == dbDepartment.EmployeeLimit)
+            throw new AlreadyFullException($"{departmentName.ToUpper()} Department is already full");
         foreach (var employee in HRDbContext.Employees)
         {
             if (employee.Id == employeeId && employeeName.ToLower()==employee.Name.ToLower() && employee.Company==dbCompany && employee.Department != dbDepartment)
             {
                 counter++;
                 employee.Department = dbDepartment;
-                HRDbContext.Employees.Add(employee);
+                dbDepartment.currentEmployeeCount++;
                 Console.WriteLine($"The new employee- {employee.Name.ToUpper()} has been successfully added \n");
                 break;
             }
@@ -103,6 +110,12 @@ public class DepartmentService : IDepartmentService
 
 
     }
+    public Department? FindDepartmentByName(string? departmentName)
+    {
+        if (String.IsNullOrEmpty(departmentName))
+            throw new ArgumentNullException();
+        return HRDbContext.Departments.Find(c => c.Name.ToLower() == departmentName.ToLower());
+    }
 
-   
+
 }

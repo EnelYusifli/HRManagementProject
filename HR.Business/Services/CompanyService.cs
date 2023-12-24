@@ -36,20 +36,19 @@ public class CompanyService : ICompanyService
                 if (department.Company.ToLower() == dbCompany.Name.ToLower())
                 {
                     counter++;
-                Console.WriteLine($"{department.Name.ToUpper()} Department is in {companyName.ToUpper()} Company");
+                Console.WriteLine($"{department.Id}){department.Name.ToUpper()} Department is in {companyName.ToUpper()} Company");
                 }
             }
                if(counter==0) Console.WriteLine($"{companyName} company does not have any department");
         }
         else throw new NotFoundException($"{companyName.ToUpper()} Company cannot be found");
     }
-    public void ShowAll(string companytName)
+    public Company? FindCompanyByName(string? companyName)
     {
-        foreach (var department in HRDbContext.Departments)
-        {
-            if (department.Company.ToLower() == companytName.ToLower())
-                Console.WriteLine($"{department.Id} {department.Name}");
-        }
+        if (String.IsNullOrEmpty(companyName))
+            throw new ArgumentNullException();
+        return HRDbContext.Companies.Find(c => c.Name.ToLower() == companyName.ToLower());
     }
 
+   
 }

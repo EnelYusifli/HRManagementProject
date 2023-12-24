@@ -14,14 +14,15 @@ public class Employee:IEntity
     public bool IsDeleted { get; set; }
     private static int id;
 
-    public Employee(string name, string surname,string companyName, string departmentName, int salary)
+    public Employee(string name, string surname,Company company, Department department, int salary)
     {
         Id = id++;
         Name = name;
         Surname = surname;
-        Department.Name = departmentName;
-        Company.Name= companyName;
+        Department = department;
+        Company = company;
         Salary = salary;
         IsDeleted = false;
+
     }
 }
