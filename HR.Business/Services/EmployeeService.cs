@@ -46,20 +46,29 @@ public class EmployeeService : IEmployeeService
 
     }
 
-    public void UpdateSalary(int employeeId, string? departmentName, string? companyName, int newSalary)
+    public void UpdateSalary( int newSalary, int employeeId = -1, int departmentId = -1)
     {
-        if (String.IsNullOrEmpty(companyName))
-            throw new ArgumentNullException();
-        if (String.IsNullOrEmpty(departmentName))
-            throw new ArgumentNullException();
+
+        if (departmentId < 0)
+            throw new LessThanMinimumException($"Id cannot be negative"); 
+        if (employeeId < 0)
+            throw new LessThanMinimumException($"Id cannot be negative"); 
         if (newSalary <= 0)
-            throw new LessThanMinimumException($"Salary cannot be 0 or negative"); ;
-        Company? dbCompany =
-       HRDbContext.Companies.Find(c => c.Name.ToLower() == companyName.ToLower());
-        if (dbCompany is null || companyName.ToLower() != dbCompany.Name.ToLower())
-            throw new NotFoundException($"{companyName.ToUpper()} Company cannot be found");
-        Company? company = companyService.FindCompanyByName(companyName.ToLower());
-        Department? department = departmentService.FindDepartmentByName(departmentName.ToLower());
+            throw new LessThanMinimumException($"Salary cannot be 0 or negative"); 
+        Department? department = departmentService.FindDepartmentById(departmentId);
+        Department? employee = departmentService.FindDepartmentById(departmentId);
+
     }
 
+    public void UpdateSalary(int employeeId, string? departmentName, string? companyName, int newSalary)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Employee? FindEmployeeById(int employeeId=-1)
+    {
+        if (employeeId < 0)
+            throw new LessThanMinimumException("Id cannot be negative");
+        return HRDbContext.Employees.Find(e => e.Id == employeeId);
+    }
 }
