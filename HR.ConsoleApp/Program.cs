@@ -155,12 +155,16 @@ Console.ResetColor();
                 case (int)ConsoleApp.GetDepartmentEmployees:
                     try
                     {
-                        Console.WriteLine("Enter Department Name:");
-                        string? departmentName = Console.ReadLine();
-                        Console.WriteLine("Enter Company Name:");
-                        string? companyName = Console.ReadLine();
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        foreach (var department in HRDbContext.Departments)
+                        {
+                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name} \n Company:{department.Company}\n \n");
+                        }
+                        Console.ResetColor();
+                        Console.WriteLine("Enter Department Id:");
+                        int departmentId = Convert.ToInt32(Console.ReadLine());
                         Console.ForegroundColor = ConsoleColor.Green;
-                        departmentService.GetDepartmentEmployees(departmentName, companyName);
+                        departmentService.GetDepartmentEmployees(departmentId);
                         Console.ResetColor();
                     }
                     catch (Exception ex)
@@ -220,14 +224,14 @@ Console.ResetColor();
 
                         int departmentId=Convert.ToInt32(Console.ReadLine());
                         Console.ForegroundColor = ConsoleColor.DarkYellow;
-                        departmentService.GetDepartmentEmployees(departmentName,companyName);
+                        departmentService.GetDepartmentEmployees(departmentId);
                         Console.WriteLine("Enter Employee Id:");
                         int employeeId = Convert.ToInt32(Console.ReadLine());
                         Console.ResetColor();
                         Console.WriteLine("Enter New Salary");
                         int newSalary = Convert.ToInt32(Console.ReadLine());
                         Console.ForegroundColor = ConsoleColor.Green;
-                        employeeService.UpdateSalary(employeeId, departmentName, companyName, newSalary);
+                        employeeService.UpdateSalary(employeeId, departmentId, newSalary);
                         Console.ResetColor();
                     }
                     catch (Exception ex)

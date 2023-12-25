@@ -8,10 +8,13 @@ namespace HR.Business.Services;
 
 public class DepartmentService : IDepartmentService
 {
-     public ICompanyService companyService { get; }
+    public IDepartmentService departmentService { get; }
+    
+    public ICompanyService companyService { get; }
     public DepartmentService()
     {
         companyService = new CompanyService();
+        departmentService = new DepartmentService();
     }
 
     public void Create(string? departmentName, string? departmentDescription, string? company, int employeeLimit)
@@ -70,24 +73,18 @@ public class DepartmentService : IDepartmentService
             throw new NotFoundException($"Employee cannot be found");
     }
 
-    public void GetDepartmentEmployees(string? departmentName, string? companyName)
+    public void GetDepartmentEmployees(int departmentId=-1)
     {
 
-        if (String.IsNullOrEmpty(departmentName))
-            throw new ArgumentNullException();
-        if (String.IsNullOrEmpty(companyName))
-            throw new ArgumentNullException();
-        Department? dbDepartment =
-           HRDbContext.Departments.Find(d => d.Name.ToLower() == departmentName.ToLower());
-        if (dbDepartment is null)
-            throw new NotFoundException($"{departmentName.ToUpper()} cannot be found");
-        Company? dbCompany =
-           HRDbContext.Companies.Find(c => c.Name.ToLower() == companyName.ToLower());
-        if (dbCompany is null)
-            throw new NotFoundException($"{companyName.ToUpper()} cannot be found");
+        if (departmentId < 0)
+            throw new LessThanMinimumException($"Id cannot be negative");
+        Department? department =
+           departmentService.FindDepartmentById(departmentId);
+        if (department is null)
+            throw new NotFoundException($"Department cannot be found");
         foreach (var employee in HRDbContext.Employees)
         {
-            if (employee.Department == dbDepartment)
+            if (employee.DepartmentId == departmentId)
                 Console.WriteLine($"Employees:\n Id: {employee.Id}\n Full Name: {employee.Name.ToUpper()} {employee.Surname.ToUpper()}\n Position: {employee.Position.ToUpper()}");
         }
 
