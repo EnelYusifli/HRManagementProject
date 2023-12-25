@@ -50,5 +50,10 @@ public class CompanyService : ICompanyService
         return HRDbContext.Companies.Find(c => c.Name.ToLower() == companyName.ToLower());
     }
 
-   
+    public Company? FindCompanyById(int companyId=-1)
+    {
+        if (companyId <0)
+            throw new ArgumentNullException();
+        return HRDbContext.Companies.Find(c => c.Id == companyId);
+    }
 }

@@ -126,7 +126,7 @@ public class DepartmentService : IDepartmentService
         return HRDbContext.Departments.Find(c => c.Name.ToLower() == departmentName.ToLower());
     }
 
-    public Department? FindDepartmentById(int departmentId)
+    public Department? FindDepartmentById(int departmentId=-1)
     {
         if (departmentId<0)
             throw new LessThanMinimumException("Id cannot be negative");
