@@ -35,29 +35,23 @@ public class DepartmentService : IDepartmentService
         Console.WriteLine($"The new department- {department.Name.ToUpper()} has been successfully created \n");
 
     }
-    //burda employeeId de elave edirem cunki eyni adli bir nece nefer ola biler.
-    public void AddEmployeeToDepartment(string? departmentName,string? companyName,int employeeId=-1)
+    
+    public void AddEmployeeToDepartment(int departmentId,int employeeId=-1)
     {
-        if (String.IsNullOrEmpty(departmentName))
-            throw new ArgumentNullException();
-        if (String.IsNullOrEmpty(companyName))
-            throw new ArgumentNullException();
+        if (departmentId < 0)
+            throw new LessThanMinimumException($"Id cannot be negative");
         if(employeeId < 0) 
             throw new ArgumentOutOfRangeException();
         int counter = 0;
         Department? dbDepartment =
-            HRDbContext.Departments.Find(d => d.Name.ToLower() == departmentName.ToLower());
+            HRDbContext.Departments.Find(d => d.Id == departmentId);
         if (dbDepartment is null)
-            throw new NotFoundException($"{departmentName.ToUpper()} Department cannot be found");
-        Company? dbCompany =
-            HRDbContext.Companies.Find(c => c.Name.ToLower() == companyName.ToLower());
-        if (dbCompany is null)
-            throw new NotFoundException($"{companyName.ToUpper()} Company cannot be found");
+            throw new NotFoundException($"Department cannot be found");
         if (dbDepartment.currentEmployeeCount == dbDepartment.EmployeeLimit)
-            throw new AlreadyFullException($"{departmentName.ToUpper()} Department is already full");
+            throw new AlreadyFullException($"{dbDepartment.Name.ToUpper()} Department is already full");
         foreach (var employee in HRDbContext.Employees)
         {
-            if (employee.Id == employeeId && employee.Company==dbCompany && employee.Department != dbDepartment)
+            if (employee.Id == employeeId && employee.DepartmentId != dbDepartment.Id)
             {
                 counter++;
                 employee.Department = dbDepartment;
@@ -96,7 +90,7 @@ public class DepartmentService : IDepartmentService
         foreach (var employee in HRDbContext.Employees)
         {
             if (employee.Department == dbDepartment)
-                Console.WriteLine($"Employees:\n Id: {employee.Id}\n Name: {employee.Name}");
+                Console.WriteLine($"Employees:\n Id: {employee.Id}\n Full Name: {employee.Name} {employee.Surname}\n Position {employee.Position}");
         }
 
     }
@@ -134,5 +128,10 @@ public class DepartmentService : IDepartmentService
         return HRDbContext.Departments.Find(c => c.Name.ToLower() == departmentName.ToLower());
     }
 
-
+    public Department? FindDepartmentById(int departmentId)
+    {
+        if (departmentId<0)
+            throw new LessThanMinimumException("Id cannot be negative");
+        return HRDbContext.Departments.Find(c => c.Id == departmentId);
+    }
 }

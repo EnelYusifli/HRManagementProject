@@ -16,7 +16,6 @@ Console.WriteLine("Company: \n");
 Console.ResetColor();
 Console.WriteLine("1)Create Company");
 Console.WriteLine("2)Get All Departments In Company\n");
-
 Console.ForegroundColor = ConsoleColor.Magenta;
 Console.WriteLine("Department: \n");
 Console.ResetColor();
@@ -29,9 +28,10 @@ Console.ForegroundColor = ConsoleColor.Magenta;
 Console.WriteLine("Employee: \n");
 Console.ResetColor();
 Console.WriteLine("7)Create Employee");
-Console.WriteLine("8)Update Salary Of An Employee\n");
+Console.WriteLine("8)Update The Salary Of An Employee\n");
+Console.WriteLine("0)Exit");
 Console.ForegroundColor = ConsoleColor.Cyan;
-Console.WriteLine("Choose an option :)");
+Console.WriteLine("Choose an option(with a number) :)");
 Console.ResetColor();
     string? option = Console.ReadLine();
     int intOption;
@@ -177,12 +177,16 @@ Console.ResetColor();
                         int employeeSalary=Convert.ToInt32(Console.ReadLine());
                         Console.WriteLine("Enter Employee Position:");
                         string? employeePosition=Console.ReadLine();
-                        Console.WriteLine("Enter Employee Company:");
-                        string? employeeCompany=Console.ReadLine();
-                        Console.WriteLine("Enter Employee Department:");
-                        string? employeeDepartment=Console.ReadLine();
+                        Console.WriteLine("Enter Employee Department Id:\n");
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        foreach (var department in HRDbContext.Departments)
+                        {
+                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name} \n Company:{department.Company}\n \n");
+                        }
+                        Console.ResetColor();
+                        int employeeDepartmentId = Convert.ToInt32(Console.ReadLine());
                         Console.ForegroundColor = ConsoleColor.Green;
-                        employeeService.Create(employeeName,employeeSurname,employeeSalary,employeeCompany,employeeDepartment,employeePosition);
+                        employeeService.Create(employeeName,employeeSurname,employeeSalary,employeeDepartmentId,employeePosition);
                         Console.ResetColor();
                     }
                     catch (Exception ex)
@@ -219,21 +223,23 @@ Console.ResetColor();
                     }
                     break;
 
-
-
+                default:
+                    isContinue = false;
+                    break;
             }
-
-
-            
         }
         else
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Please enter correct option number");
+            Console.ResetColor();
         }
     }
     else
     {
-        Console.WriteLine("Please enter correct format");
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Please enter correct format\n");
+        Console.ResetColor();
     }
 }
 

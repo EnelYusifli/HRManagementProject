@@ -9,19 +9,20 @@ public class Employee:IEntity
     public string Name { get; set; }
     public string Surname { get; set; }
     public Department? Department { get; set; }
+    public int DepartmentId { get; set; }
     public Company? Company { get; set; }
     public int Salary {  get; set; }
     public string Position {  get; set; }
     public bool IsDeleted { get; set; }
     private static int id;
 
-    public Employee(string name, string surname,Company company, Department department, int salary, string position)
+    public Employee(string name, string surname, int departmentId, int salary, string position)
     {
         Id = id++;
         Name = name;
         Surname = surname;
-        Department = department;
-        Company = company;
+        DepartmentId = departmentId;
+        
         Salary = salary;
         Position = position;
         IsDeleted = false;
