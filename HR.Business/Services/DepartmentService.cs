@@ -2,6 +2,8 @@
 using HR.Business.Utilities.Exceptions;
 using HR.Core.Entities;
 using HR.DataAccess.Context;
+using System.Data.Common;
+using System.Diagnostics.Metrics;
 using System.Runtime.CompilerServices;
 
 namespace HR.Business.Services;
@@ -36,8 +38,8 @@ public class DepartmentService : IDepartmentService
         Console.WriteLine($"The new department- {department.Name.ToUpper()} has been successfully created \n");
 
     }
-    
-    public void AddEmployeeToDepartment(int departmentId=-1,int employeeId=-1)
+    //add employee dediyiniz methodu bele adlandirmisam ki daha basa dusulen olsun
+    public void TransferEmployeeToDepartment(int departmentId=-1,int employeeId=-1)
     {
         if (departmentId < 0)
             throw new LessThanMinimumException($"Id cannot be negative");
@@ -73,18 +75,21 @@ public class DepartmentService : IDepartmentService
 
     public void GetDepartmentEmployees(int departmentId=-1)
     {
-
         if (departmentId < 0)
             throw new LessThanMinimumException($"Id cannot be negative");
-        Department? department =
-           departmentService.FindDepartmentById(departmentId);
-        if (department is null)
-            throw new NotFoundException($"Department cannot be found");
-        foreach (var employee in HRDbContext.Employees)
+        Department? dbDepartment =
+            HRDbContext.Departments.Find(d => d.Id == departmentId);
+        if (dbDepartment is not null)
         {
-            if (employee.DepartmentId == departmentId)
-                Console.WriteLine($"Employees:\n Id: {employee.Id}\n Full Name: {employee.Name.ToUpper()} {employee.Surname.ToUpper()}\n Position: {employee.Position.ToUpper()}");
+            foreach (var employee in HRDbContext.Employees)
+            {
+                if (employee.DepartmentId == dbDepartment.Id)
+                {
+                    Console.WriteLine($"Employees:\n Id: {employee.Id}\n Full Name: {employee.Name.ToUpper()} {employee.Surname.ToUpper()}\n Position: {employee.Position.ToUpper()}\n \n");
+                }
+            }
         }
+        else throw new NotFoundException($"Department cannot be found");
 
     }
 
@@ -121,10 +126,10 @@ public class DepartmentService : IDepartmentService
         return HRDbContext.Departments.Find(c => c.Name.ToLower() == departmentName.ToLower());
     }
 
-    public Department? FindDepartmentById(int departmentId=-1)
-    {
-        if (departmentId<0)
-            throw new LessThanMinimumException("Id cannot be negative");
-        return HRDbContext.Departments.Find(c => c.Id == departmentId);
-    }
+    //public Department? FindDepartmentById(int departmentId=-1)
+    //{
+    //    if (departmentId<0)
+    //        throw new LessThanMinimumException("Id cannot be negative");
+    //    return HRDbContext.Departments.Find(d => d.Id == departmentId);
+    //}
 }

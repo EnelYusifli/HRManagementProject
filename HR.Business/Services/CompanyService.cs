@@ -32,12 +32,13 @@ public class CompanyService : ICompanyService
             HRDbContext.Companies.Find(c => c.Name.ToLower() == companyName.ToLower());
         if (dbCompany is not null)
         {
+            Console.WriteLine($"Departments in {companyName.ToUpper()} Company:");
             foreach ( var department in HRDbContext.Departments)
             {
                 if (department.CompanyName.ToLower() == dbCompany.Name.ToLower())
                 {
                     counter++;
-                Console.WriteLine($" Departments in {companyName.ToUpper()} Company:\n{department.Id}){department.Name.ToUpper()} Department\n");
+                Console.WriteLine($"{department.Id}){department.Name.ToUpper()} Department\n");
                 }
             }
                if(counter==0) Console.WriteLine($"{companyName} company does not have any department");

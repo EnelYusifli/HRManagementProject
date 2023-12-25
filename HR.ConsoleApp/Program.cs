@@ -19,7 +19,7 @@ while (isContinue)
     Console.WriteLine("Department: \n");
     Console.ResetColor();
     Console.WriteLine("3)Create Department");
-    Console.WriteLine("4)Add Employee To Department");
+    Console.WriteLine("4)Transfer Employee To Department");
     Console.WriteLine("5)Update Department");
     Console.WriteLine("6)Get Department Employee \n");
     Console.ForegroundColor = ConsoleColor.Magenta;
@@ -110,7 +110,7 @@ while (isContinue)
                         Console.ResetColor();
                     }
                     break;
-                case (int)ConsoleApp.AddEmployeeToDepartment:
+                case (int)ConsoleApp.TransferEmployeeToDepartment:
                     try
                     {
                         Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -131,7 +131,7 @@ while (isContinue)
                         Console.WriteLine("Enter Employee Id:\n");
                         int employeeId = Convert.ToInt32(Console.ReadLine());
                         Console.ForegroundColor = ConsoleColor.Green;
-                        departmentService.AddEmployeeToDepartment(departmentId, employeeId);
+                        departmentService.TransferEmployeeToDepartment(departmentId, employeeId);
                         Console.ResetColor();
 
                     }

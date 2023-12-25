@@ -32,7 +32,7 @@ public class EmployeeService : IEmployeeService
         if(departmentId < 0) 
             throw new LessThanMinimumException($"Id cannot be negative");
         
-        Department? dbDepartment = departmentService.FindDepartmentById(departmentId);
+        Department? dbDepartment = HRDbContext.Departments.Find(d => d.Id == departmentId);
         if (dbDepartment is null)
             throw new NotFoundException($"Department cannot be found");
         if (dbDepartment.currentEmployeeCount == dbDepartment.EmployeeLimit)
@@ -54,7 +54,7 @@ public class EmployeeService : IEmployeeService
             throw new LessThanMinimumException($"Id cannot be negative"); 
         if (newSalary <= 0)
             throw new LessThanMinimumException($"Salary cannot be 0 or negative"); 
-        Department? department = departmentService.FindDepartmentById(departmentId);
+        Department? department = HRDbContext.Departments.Find(d => d.Id == departmentId);
         if (department is null)
             throw new NotFoundException("Department cannot be found");
         Employee? employee = employeeService.FindEmployeeById(employeeId);
@@ -74,4 +74,13 @@ public class EmployeeService : IEmployeeService
             throw new LessThanMinimumException("Id cannot be negative");
         return HRDbContext.Employees.Find(e => e.Id == employeeId);
     }
+    //public void LogEmployeeInformation(Employee employee)
+    //{
+    //    Console.WriteLine($"Employees:\n Id: {employee.Id}\n Full Name: {GetEmployeeFullName(employee)}\n Position: {employee.Position.ToUpper()}");
+    //}
+
+    //public string GetEmployeeFullName(Employee employee)
+    //{
+    //    return $"{employee.Name.ToUpper()} {employee.Surname.ToUpper()}";
+    //}
 }
