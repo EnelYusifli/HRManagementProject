@@ -63,7 +63,13 @@ Console.ResetColor();
                 case (int)ConsoleApp.GetAllDepartments:
                     try
                     {
-                        Console.WriteLine("Enter Company Name:");
+                        Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                        foreach (var company in HRDbContext.Companies)
+                        {
+                            Console.WriteLine(company.Name);
+                        }
+                        Console.ResetColor();
+                        Console.WriteLine("\n Enter Company Name:");
                         string? companyName=Console.ReadLine();
                         Console.ForegroundColor = ConsoleColor.Green;
                         companyService.GetAllDepartments(companyName);
@@ -83,7 +89,13 @@ Console.ResetColor();
                         string? departmentName= Console.ReadLine();
                         Console.WriteLine("Enter Department Description:");
                         string? departmentDescription = Console.ReadLine();
-                        Console.WriteLine("Enter Company of Department:");
+                        Console.WriteLine("Enter Company of Department:\n");
+                        Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                        foreach (var company in HRDbContext.Companies)
+                        {
+                            Console.WriteLine(company.Name);
+                        }
+                        Console.ResetColor();
                         string? departmentCompany= Console.ReadLine();
                         Console.WriteLine("Enter Employee Limit");
                         int employeeLimit=Convert.ToInt32(Console.ReadLine());
@@ -191,13 +203,7 @@ Console.ResetColor();
                             Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name} \n Company:{department.Company}\n \n");
                         }
                         Console.ResetColor();
-                        Console.ForegroundColor = ConsoleColor.Gray;
-                        Console.WriteLine("Enter Employee Department Id:\n");
-                        //foreach (var employee in HRDbContext.Departments)
-                        //{
-                        //    Console.WriteLine($"Employees:\n Id: {employee.Id}\n Name: {employee.Name} \n Company:{employee.Company}\n \n");
-                        //Console.ResetColor();
-                        //}
+                        Console.WriteLine("Enter Department Id:\n");
                         int employeeDepartmentId = Convert.ToInt32(Console.ReadLine());
                         Console.ForegroundColor = ConsoleColor.Green;
                         employeeService.Create(employeeName,employeeSurname,employeeSalary,employeeDepartmentId,employeePosition);
@@ -225,10 +231,18 @@ Console.ResetColor();
                         int departmentId=Convert.ToInt32(Console.ReadLine());
                         Console.ForegroundColor = ConsoleColor.DarkYellow;
                         departmentService.GetDepartmentEmployees(departmentId);
+                        Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                        foreach (var employee in HRDbContext.Employees)
+                        {
+                            if (employee.DepartmentId == departmentId)
+                                Console.WriteLine($"Id:{employee.Id}/Full Name: {employee.Name} {employee.Surname} ");
+                        }
+                        Console.ResetColor();
                         Console.WriteLine("Enter Employee Id:");
+
                         int employeeId = Convert.ToInt32(Console.ReadLine());
                         Console.ResetColor();
-                        Console.WriteLine("Enter New Salary");
+                        Console.WriteLine("Enter New Salary:");
                         int newSalary = Convert.ToInt32(Console.ReadLine());
                         Console.ForegroundColor = ConsoleColor.Green;
                         employeeService.UpdateSalary(employeeId, departmentId, newSalary);

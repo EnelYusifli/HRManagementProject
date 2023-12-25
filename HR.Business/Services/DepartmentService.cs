@@ -9,7 +9,6 @@ namespace HR.Business.Services;
 public class DepartmentService : IDepartmentService
 {
     public IDepartmentService departmentService { get; }
-    
     public ICompanyService companyService { get; }
     public DepartmentService()
     {

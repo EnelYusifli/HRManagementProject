@@ -33,7 +33,7 @@ public class CompanyService : ICompanyService
         {
             foreach ( var department in HRDbContext.Departments)
             {
-                if (department.Company.ToLower() == dbCompany.Name.ToLower())
+                if (department.CompanyName.ToLower() == dbCompany.Name.ToLower())
                 {
                     counter++;
                 Console.WriteLine($" Departments in {companyName.ToUpper()} Company:\n{department.Id}){department.Name.ToUpper()} Department\n");
