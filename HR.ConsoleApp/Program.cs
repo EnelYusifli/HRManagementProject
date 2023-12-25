@@ -116,7 +116,7 @@ while (isContinue)
                         Console.ForegroundColor = ConsoleColor.DarkYellow;
                         foreach (var department in HRDbContext.Departments)
                         {
-                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name} \n Company:{department.Company}\n \n");
+                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name.ToUpper()} \n Company:{department.CompanyName.ToUpper()}\n \n");
                         }
                         Console.ResetColor();
                         Console.WriteLine("Enter Department Id:");
@@ -145,16 +145,21 @@ while (isContinue)
                 case (int)ConsoleApp.UpdateDepartment:
                     try
                     {
-                        Console.WriteLine("Enter Department Name:");
-                        string? oldDepartmentName = Console.ReadLine();
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        foreach (var department in HRDbContext.Departments)
+                        {
+                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name.ToUpper()} \n Company:{department.CompanyName.ToUpper()}\n \n");
+                        }
+                        Console.ResetColor();
+
+                        Console.WriteLine("Enter Department Id:");
+                        int departmentId = Convert.ToInt32(Console.ReadLine());
                         Console.WriteLine("Enter New Name For Department:");
                         string? newDepartmentName = Console.ReadLine();
-                        Console.WriteLine("Enter Company Name:");
-                        string? companyName = Console.ReadLine();
                         Console.WriteLine($"Enter New Employee Limit:");
                         int newEmployeeLimit = Convert.ToInt32(Console.ReadLine());
                         Console.ForegroundColor = ConsoleColor.Green;
-                        departmentService.UpdateDepartment(oldDepartmentName, newDepartmentName, companyName, newEmployeeLimit);
+                        departmentService.UpdateDepartment(newDepartmentName,newEmployeeLimit,departmentId);
                         Console.ResetColor();
                     }
                     catch (Exception ex)
@@ -170,7 +175,7 @@ while (isContinue)
                         Console.ForegroundColor = ConsoleColor.Blue;
                         foreach (var department in HRDbContext.Departments)
                         {
-                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name} \n Company:{department.Company}\n \n");
+                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name.ToUpper()}  \n Company: {department.CompanyName.ToUpper()}\n \n");
                         }
                         Console.ResetColor();
                         Console.WriteLine("Enter Department Id:");
@@ -200,7 +205,7 @@ while (isContinue)
                         Console.ForegroundColor = ConsoleColor.Blue;
                         foreach (var department in HRDbContext.Departments)
                         {
-                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name} \n Company:{department.Company}\n \n");
+                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name.ToUpper()}  \n Company: {department.CompanyName.ToUpper()}\n \n");
                         }
                         Console.ResetColor();
                         Console.WriteLine("Enter Department Id:\n");
@@ -222,7 +227,7 @@ while (isContinue)
                         Console.ForegroundColor = ConsoleColor.Blue;
                         foreach (var department in HRDbContext.Departments)
                         {
-                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name} \n Company:{department.Company}\n \n");
+                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name.ToUpper()}  \n Company: {department.CompanyName.ToUpper()}\n \n");
                         }
                         Console.ResetColor();
 
@@ -235,7 +240,7 @@ while (isContinue)
                         foreach (var employee in HRDbContext.Employees)
                         {
                             if (employee.DepartmentId == departmentId)
-                                Console.WriteLine($"Id:{employee.Id}/Full Name: {employee.Name} {employee.Surname} ");
+                                Console.WriteLine($"Id:{employee.Id}/Full Name: {employee.Name} {employee.Surname}/Position: {employee.Position}/Salary: {employee.Salary} ");
                         }
                         Console.ResetColor();
                         Console.WriteLine("Enter Employee Id:");

@@ -92,30 +92,25 @@ public class DepartmentService : IDepartmentService
         else throw new NotFoundException($"Department cannot be found");
 
     }
-
-    public void UpdateDepartment(string? oldDepartmentName, string? newDepartmentName,string? companyName, int newEmployeeLimit)
+    public void UpdateDepartment( string? newDepartmentName, int newEmployeeLimit ,int departmentId= -1)
     {
-        if (String.IsNullOrEmpty(oldDepartmentName))
-            throw new ArgumentNullException(); 
+        if (departmentId < 0)
+            throw new LessThanMinimumException($"Id cannot be negative");
         if (String.IsNullOrEmpty(newDepartmentName))
             throw new ArgumentNullException();
-        if (String.IsNullOrEmpty(companyName))
-            throw new ArgumentNullException();
-        Department? dbOldDepartment =
-          HRDbContext.Departments.Find(d => d.Name.ToLower() == oldDepartmentName.ToLower());
-        if (dbOldDepartment is null)
-            throw new NotFoundException($"{oldDepartmentName.ToUpper()} cannot be found");
+        Department? dbDepartment =
+          HRDbContext.Departments.Find(d => d.Id == departmentId);
+        if (dbDepartment is null)
+            throw new NotFoundException($"Department cannot be found");
         Department? dbNewDepartment =
           HRDbContext.Departments.Find(d => d.Name.ToLower() == newDepartmentName.ToLower());
-        if (dbNewDepartment is not null)
+        if (dbNewDepartment is not null && dbNewDepartment.Company==dbDepartment.Company)
             throw new AlreadyExistException($"{newDepartmentName.ToUpper()} department is already exist");
-        Company? dbCompany =
-           HRDbContext.Companies.Find(c => c.Name.ToLower() == companyName.ToLower());
-        if (dbCompany is null)
-            throw new NotFoundException($"{companyName.ToUpper()} cannot be found");
-        dbOldDepartment.Name = newDepartmentName;
-        dbOldDepartment.EmployeeLimit=newEmployeeLimit;
-        Console.WriteLine($"{newDepartmentName} has been successfully updated");
+        if (newEmployeeLimit < 4)
+            throw new AlreadyExistException($"Employee count should be more than 3");
+       dbDepartment.Name = newDepartmentName;
+        dbDepartment.EmployeeLimit=newEmployeeLimit;
+        Console.WriteLine($"{newDepartmentName.ToUpper()} Department has been successfully updated");
 
 
     }
@@ -125,11 +120,4 @@ public class DepartmentService : IDepartmentService
             throw new ArgumentNullException();
         return HRDbContext.Departments.Find(c => c.Name.ToLower() == departmentName.ToLower());
     }
-
-    //public Department? FindDepartmentById(int departmentId=-1)
-    //{
-    //    if (departmentId<0)
-    //        throw new LessThanMinimumException("Id cannot be negative");
-    //    return HRDbContext.Departments.Find(d => d.Id == departmentId);
-    //}
 }

@@ -17,7 +17,7 @@ public class CompanyService : ICompanyService
         Company? dbCompany =
              HRDbContext.Companies.Find(c => c.Name.ToLower() == companyName.ToLower());
         if (dbCompany is not null)
-            throw new AlreadyExistException($"{dbCompany.Name.ToUpper()} is already exist");
+            throw new AlreadyExistException($"{dbCompany.Name.ToUpper()} Company is already exist");
         Company company = new(companyName);
         HRDbContext.Companies.Add(company);
         Console.WriteLine($"The new company- {company.Name.ToUpper()} has been successfully created \n");
