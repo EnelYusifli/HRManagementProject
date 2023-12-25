@@ -9,13 +9,10 @@ namespace HR.Business.Services;
 public class EmployeeService : IEmployeeService
 {
     public IDepartmentService departmentService { get; }
-    public ICompanyService companyService { get; }
     public IEmployeeService employeeService { get; }
     public EmployeeService()
     {
         departmentService = new DepartmentService();
-        companyService= new CompanyService();
-        employeeService= new EmployeeService();
     }
   
    

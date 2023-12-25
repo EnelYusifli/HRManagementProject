@@ -9,6 +9,7 @@ namespace HR.Business.Services;
 
 public class CompanyService : ICompanyService
 {
+
     public void Create(string? companyName, string? companyDescription)
     {
         if (String.IsNullOrEmpty(companyName))

@@ -9,11 +9,10 @@ namespace HR.Business.Services;
 public class DepartmentService : IDepartmentService
 {
     public IDepartmentService departmentService { get; }
-    public ICompanyService companyService { get; }
+    public ICompanyService? companyService { get; }
     public DepartmentService()
     {
         companyService = new CompanyService();
-        departmentService = new DepartmentService();
     }
 
     public void Create(string? departmentName, string? departmentDescription, string? company, int employeeLimit)
