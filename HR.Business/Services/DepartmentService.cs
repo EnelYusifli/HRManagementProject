@@ -26,7 +26,7 @@ public class DepartmentService : IDepartmentService
             HRDbContext.Companies.Find(c => c.Name.ToLower() == company.ToLower());
         if (dbCompany is null)
             throw new NotFoundException($"{company.ToUpper()} Company cannot be found");
-        if (dbDepartment is not null && dbDepartment.Company==company)
+        if (dbDepartment is not null && dbDepartment.CompanyName==company)
          throw new AlreadyExistException($"{dbDepartment.Name.ToUpper()} Department is already exist");
         if (employeeLimit < 4)
          throw new LessThanMinimumException($"The {departmentName.ToUpper()} department should have at least 4 employees ");

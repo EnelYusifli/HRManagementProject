@@ -22,7 +22,6 @@ public class Employee:IEntity
         Name = name;
         Surname = surname;
         DepartmentId = departmentId;
-        
         Salary = salary;
         Position = position;
         IsDeleted = false;

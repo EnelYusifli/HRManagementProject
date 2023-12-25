@@ -10,15 +10,17 @@ public class EmployeeService : IEmployeeService
 {
     public IDepartmentService departmentService { get; }
     public ICompanyService companyService { get; }
+    public IEmployeeService employeeService { get; }
     public EmployeeService()
     {
         departmentService = new DepartmentService();
         companyService= new CompanyService();
+        employeeService= new EmployeeService();
     }
   
    
 
-    //department id yerine company name ve department name etdim, cunki id'ler yadimizda qalmaya biler.
+
     public void Create(string? employeeName, string? employeeSurname, int employeeSalary, int departmentId,string? position)
     {
         if (String.IsNullOrEmpty(employeeName))
@@ -56,13 +58,17 @@ public class EmployeeService : IEmployeeService
         if (newSalary <= 0)
             throw new LessThanMinimumException($"Salary cannot be 0 or negative"); 
         Department? department = departmentService.FindDepartmentById(departmentId);
-        Department? employee = departmentService.FindDepartmentById(departmentId);
-
-    }
-
-    public void UpdateSalary(int employeeId, string? departmentName, string? companyName, int newSalary)
-    {
-        throw new NotImplementedException();
+        if (department is null)
+            throw new NotFoundException("Department cannot be found");
+        Employee? employee = employeeService.FindEmployeeById(employeeId);
+        if (employee is null)
+            throw new NotFoundException("Employee cannot be found");
+        if (employee.Company == department.Company)
+        {
+            employee.Salary = newSalary;
+        }
+        else 
+            throw new NotFoundException($"Employee {employee.Name} cannot be found in Company ");
     }
 
     public Employee? FindEmployeeById(int employeeId=-1)
