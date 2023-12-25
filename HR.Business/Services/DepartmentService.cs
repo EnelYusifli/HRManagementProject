@@ -36,7 +36,7 @@ public class DepartmentService : IDepartmentService
 
     }
     
-    public void AddEmployeeToDepartment(int departmentId,int employeeId=-1)
+    public void AddEmployeeToDepartment(int departmentId=-1,int employeeId=-1)
     {
         if (departmentId < 0)
             throw new LessThanMinimumException($"Id cannot be negative");
@@ -59,17 +59,15 @@ public class DepartmentService : IDepartmentService
                 Console.WriteLine($"The new employee- {employee.Name.ToUpper()} has been successfully added \n");
                 break;
             }
-            else if (employee.Id == employeeId  && employee.Company == dbCompany && employee.Department ==dbDepartment)
+            else if (employee.Id == employeeId && employee.DepartmentId ==dbDepartment.Id)
             {
                 counter++;
-                throw new AlreadyExistException($"Employee {employee.Name} is already in {departmentName.ToUpper()} Department");
+                throw new AlreadyExistException($"Employee {employee.Name} is already in {dbDepartment.Name.ToUpper()} Department");
                 
             }
         }
         if(counter==0)
             throw new NotFoundException($"Employee cannot be found");
-
-
     }
 
     public void GetDepartmentEmployees(string? departmentName, string? companyName)
@@ -90,7 +88,7 @@ public class DepartmentService : IDepartmentService
         foreach (var employee in HRDbContext.Employees)
         {
             if (employee.Department == dbDepartment)
-                Console.WriteLine($"Employees:\n Id: {employee.Id}\n Full Name: {employee.Name} {employee.Surname}\n Position {employee.Position}");
+                Console.WriteLine($"Employees:\n Id: {employee.Id}\n Full Name: {employee.Name.ToUpper()} {employee.Surname.ToUpper()}\n Position: {employee.Position.ToUpper()}");
         }
 
     }

@@ -101,21 +101,25 @@ Console.ResetColor();
                     case (int)ConsoleApp.AddEmployeeToDepartment:
                     try
                     {
-                        Console.WriteLine("Enter Department Name:");
-                        string? departmentName = Console.ReadLine();
-                        Console.WriteLine("Enter Company Name:");
-                        string? companyName = Console.ReadLine();
-                        Console.WriteLine("Enter Employee Id:\n");
+                        Console.ForegroundColor = ConsoleColor.DarkYellow;
+                        foreach (var department in HRDbContext.Departments)
+                        {
+                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name} \n Company:{department.Company}\n \n");
+                        }
+                        Console.ResetColor();
+                        Console.WriteLine("Enter Department Id:");
+                        int departmentId = Convert.ToInt32(Console.ReadLine());
                         Console.ForegroundColor = ConsoleColor.DarkYellow;
                         foreach (var employee in HRDbContext.Employees)
                         {
-                            if (employee.Company.Name.ToLower() == companyName.ToLower())
+                            if (employee.DepartmentId == departmentId)
                                 Console.WriteLine($"Id:{employee.Id}/Full Name: {employee.Name} {employee.Surname} ");
                         }
                         Console.ResetColor();
+                        Console.WriteLine("Enter Employee Id:\n");
                         int employeeId=Convert.ToInt32(Console.ReadLine());
                         Console.ForegroundColor = ConsoleColor.Green;
-                        departmentService.AddEmployeeToDepartment(departmentName,companyName,employeeId);
+                        departmentService.AddEmployeeToDepartment(departmentId,employeeId);
                         Console.ResetColor();
 
                     }
@@ -177,13 +181,17 @@ Console.ResetColor();
                         int employeeSalary=Convert.ToInt32(Console.ReadLine());
                         Console.WriteLine("Enter Employee Position:");
                         string? employeePosition=Console.ReadLine();
-                        Console.WriteLine("Enter Employee Department Id:\n");
                         Console.ForegroundColor = ConsoleColor.Blue;
                         foreach (var department in HRDbContext.Departments)
                         {
                             Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name} \n Company:{department.Company}\n \n");
                         }
                         Console.ResetColor();
+                        Console.WriteLine("Enter Employee Department Id:\n");
+                        foreach (var employee in HRDbContext.Departments)
+                        {
+                            Console.WriteLine($"Employees:\n Id: {employee.Id}\n Name: {employee.Name} \n Company:{employee.Company}\n \n");
+                        }
                         int employeeDepartmentId = Convert.ToInt32(Console.ReadLine());
                         Console.ForegroundColor = ConsoleColor.Green;
                         employeeService.Create(employeeName,employeeSurname,employeeSalary,employeeDepartmentId,employeePosition);
