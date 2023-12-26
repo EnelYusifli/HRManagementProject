@@ -14,19 +14,20 @@ while (isContinue)
     Console.WriteLine("Company: \n");
     Console.ResetColor();
     Console.WriteLine("1)Create Company");
-    Console.WriteLine("2)Get All Departments In Company\n");
+    Console.WriteLine("2)Get All Departments In Company");
+    Console.WriteLine("3)Delete Company\n");
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.WriteLine("Department: \n");
     Console.ResetColor();
-    Console.WriteLine("3)Create Department");
-    Console.WriteLine("4)Transfer Employee To Department");
-    Console.WriteLine("5)Update Department");
-    Console.WriteLine("6)Get Department Employee \n");
+    Console.WriteLine("4)Create Department");
+    Console.WriteLine("5)Transfer Employee To Department");
+    Console.WriteLine("6)Update Department");
+    Console.WriteLine("7)Get Department Employee \n");
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.WriteLine("Employee: \n");
     Console.ResetColor();
-    Console.WriteLine("7)Create Employee");
-    Console.WriteLine("8)Update The Salary Of An Employee\n");
+    Console.WriteLine("8)Create Employee");
+    Console.WriteLine("9)Update The Salary Of An Employee\n");
     Console.WriteLine("0)Exit");
     Console.ForegroundColor = ConsoleColor.Cyan;
     Console.WriteLine("\n Choose an option(with a number) :)\n");
@@ -78,6 +79,29 @@ while (isContinue)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine(ex.Message);
+                        Console.ResetColor();
+                    }
+                    break;
+                case (int)ConsoleApp.DeleteCompany:
+                    try
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.WriteLine("Companies:\n");
+                        foreach (var company in HRDbContext.Companies)
+                        {
+                            Console.WriteLine($"{company.Name.ToUpper()} Company");
+                        }
+                        Console.ResetColor();
+                        Console.WriteLine("Enter Company Name:");
+                        string? companyName = Console.ReadLine();
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        companyService.DeleteCompany(companyName);
+                        Console.ResetColor();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine(ex.Message); 
                         Console.ResetColor();
                     }
                     break;

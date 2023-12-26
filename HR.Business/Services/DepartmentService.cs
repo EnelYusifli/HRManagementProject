@@ -16,7 +16,7 @@ public class DepartmentService : IDepartmentService
     {
         companyService = new CompanyService();
     }
-
+    
     public void Create(string? departmentName, string? departmentDescription, string? company, int employeeLimit)
     {
         if (String.IsNullOrEmpty(departmentName))

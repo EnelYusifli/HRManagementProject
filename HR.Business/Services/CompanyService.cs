@@ -51,6 +51,31 @@ public class CompanyService : ICompanyService
             throw new ArgumentNullException();
         return HRDbContext.Companies.Find(c => c.Name.ToLower() == companyName.ToLower());
     }
+    public void DeleteCompany(string? companyName)
+    {
+        if (String.IsNullOrEmpty(companyName))
+            throw new ArgumentNullException();
+
+        Company? dbCompany =
+            HRDbContext.Companies.Find(c => c.Name.ToLower() == companyName.ToLower());
+
+        if (dbCompany is not null)
+        {
+            bool hasDepartments = HRDbContext.Departments.Any(d => d.CompanyName.ToLower() == dbCompany.Name.ToLower());
+            if (hasDepartments)
+                throw new NotFoundException($"Cannot delete {companyName.ToUpper()} Company as it has associated departments");
+            else
+            {
+                HRDbContext.Companies.Remove(dbCompany);
+                Console.WriteLine($"{companyName.ToUpper()} Company has been successfully deleted");
+            }
+        }
+        else
+        {
+            throw new NotFoundException($"{companyName.ToUpper()} Company cannot be found");
+        }
+    }
+
 
     public Company? FindCompanyById(int companyId=-1)
     {
