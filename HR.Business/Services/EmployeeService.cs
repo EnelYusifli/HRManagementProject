@@ -46,7 +46,7 @@ public class EmployeeService : IEmployeeService
 
     }
 
-    public void UpdateSalary( int newSalary, int employeeId = -1, int departmentId = -1)
+    public void UpdateSalary( int newSalary, int employeeId, int departmentId)
     {
 
         if (departmentId < 0)

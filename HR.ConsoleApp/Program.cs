@@ -144,23 +144,22 @@ while (isContinue)
                 case (int)ConsoleApp.TransferEmployeeToDepartment:
                     try
                     {
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        foreach (var employee in HRDbContext.Employees)
+                        {
+                                Console.WriteLine($"Id:{employee.Id}/Full Name: {employee.Name.ToUpper()} {employee.Surname.ToUpper()} ");
+                        }
+                        Console.ResetColor();
+                        Console.WriteLine("Enter Employee Id:\n");
+                        int employeeId = Convert.ToInt32(Console.ReadLine());
                         Console.ForegroundColor = ConsoleColor.DarkYellow;
                         foreach (var department in HRDbContext.Departments)
                         {
                             Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name.ToUpper()} \n Company:{department.CompanyName.ToUpper()}\n \n");
                         }
                         Console.ResetColor();
-                        Console.WriteLine("Enter Department Id:");
+                        Console.WriteLine("Enter New Department Id:");
                         int departmentId = Convert.ToInt32(Console.ReadLine());
-                        Console.ForegroundColor = ConsoleColor.DarkYellow;
-                        foreach (var employee in HRDbContext.Employees)
-                        {
-                            if (employee.DepartmentId == departmentId)
-                                Console.WriteLine($"Id:{employee.Id}/Full Name: {employee.Name.ToUpper()} {employee.Surname.ToUpper()} ");
-                        }
-                        Console.ResetColor();
-                        Console.WriteLine("Enter Employee Id:\n");
-                        int employeeId = Convert.ToInt32(Console.ReadLine());
                         Console.ForegroundColor = ConsoleColor.Green;
                         departmentService.TransferEmployeeToDepartment(departmentId, employeeId);
                         Console.ResetColor();
