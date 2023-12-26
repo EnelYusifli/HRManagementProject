@@ -75,12 +75,4 @@ public class CompanyService : ICompanyService
             throw new NotFoundException($"{companyName.ToUpper()} Company cannot be found");
         }
     }
-
-
-    public Company? FindCompanyById(int companyId=-1)
-    {
-        if (companyId <0)
-            throw new ArgumentNullException();
-        return HRDbContext.Companies.Find(c => c.Id == companyId);
-    }
 }

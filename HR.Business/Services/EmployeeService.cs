@@ -39,6 +39,7 @@ public class EmployeeService : IEmployeeService
             throw new AlreadyFullException($"{dbDepartment.Name.ToUpper()} Department is already full");
         Employee employee = new Employee(employeeName, employeeSurname, departmentId, employeeSalary, position);
         employee.Department=dbDepartment;
+        employee.Company=dbDepartment.Company;
         HRDbContext.Employees.Add(employee);
         dbDepartment.currentEmployeeCount++;
         Console.WriteLine($"The new employee- {employee.Name.ToUpper()} has been successfully created \n");
@@ -57,7 +58,8 @@ public class EmployeeService : IEmployeeService
         Department? department = HRDbContext.Departments.Find(d => d.Id == departmentId);
         if (department is null)
             throw new NotFoundException("Department cannot be found");
-        Employee? employee = employeeService.FindEmployeeById(employeeId);
+        Employee? employee =
+            HRDbContext.Employees.Find(e => e.Id == employeeId);
         if (employee is null)
             throw new NotFoundException("Employee cannot be found");
         if (employee.Company == department.Company)
@@ -67,20 +69,23 @@ public class EmployeeService : IEmployeeService
         else 
             throw new NotFoundException($"Employee {employee.Name} cannot be found in Company ");
     }
-
-    public Employee? FindEmployeeById(int employeeId=-1)
+    public void DeleteEmployee(int employeeId)
     {
         if (employeeId < 0)
-            throw new LessThanMinimumException("Id cannot be negative");
-        return HRDbContext.Employees.Find(e => e.Id == employeeId);
-    }
-    //public void LogEmployeeInformation(Employee employee)
-    //{
-    //    Console.WriteLine($"Employees:\n Id: {employee.Id}\n Full Name: {GetEmployeeFullName(employee)}\n Position: {employee.Position.ToUpper()}");
-    //}
+            throw new LessThanMinimumException($"Id cannot be negative");
 
-    //public string GetEmployeeFullName(Employee employee)
-    //{
-    //    return $"{employee.Name.ToUpper()} {employee.Surname.ToUpper()}";
-    //}
+        Employee? dbEmployee =
+            HRDbContext.Employees.Find(e => e.Id == employeeId);
+
+        if (dbEmployee is not null)
+        {
+                HRDbContext.Employees.Remove(dbEmployee);
+                Console.WriteLine($"Employee has been successfully deleted");
+            
+        }
+        else
+        {
+            throw new NotFoundException($"Employee cannot be found");
+        }
+    }
 }

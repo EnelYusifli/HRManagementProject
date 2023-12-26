@@ -16,6 +16,7 @@ public class Employee:IEntity
     public bool IsDeleted { get; set; }
     private static int id;
 
+
     public Employee(string name, string surname, int departmentId, int salary, string position)
     {
         Id = id++;

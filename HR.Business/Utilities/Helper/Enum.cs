@@ -14,6 +14,7 @@ public enum ConsoleApp
     DeleteDepartment,
     //employee
     CreateEmployee,
-    UpdateSalary
+    UpdateSalary,
+    DeleteEmployee
 
 }

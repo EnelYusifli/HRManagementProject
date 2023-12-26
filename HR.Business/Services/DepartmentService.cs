@@ -138,10 +138,4 @@ public class DepartmentService : IDepartmentService
             throw new NotFoundException($"Department cannot be found");
         }
     }
-    public Department? FindDepartmentByName(string? departmentName)
-    {
-        if (String.IsNullOrEmpty(departmentName))
-            throw new ArgumentNullException();
-        return HRDbContext.Departments.Find(c => c.Name.ToLower() == departmentName.ToLower());
-    }
 }
