@@ -68,7 +68,7 @@ public class EmployeeService : IEmployeeService
             Console.WriteLine("Salary is updated");
         }
         else 
-            throw new NotFoundException($"Employee {employee.Name} cannot be found in Company ");
+            throw new NotFoundException($"Employee cannot be found in Company ");
     }
     public void UpdatePosition(int employeeId,string? newPosition)
     {

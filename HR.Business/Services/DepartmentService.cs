@@ -98,7 +98,7 @@ public class DepartmentService : IDepartmentService
         else throw new NotFoundException($"Department cannot be found");
 
     }
-    public void UpdateDepartment( string? newDepartmentName, int newEmployeeLimit ,int departmentId= -1)
+    public void UpdateDepartment( string? newDepartmentName, int newEmployeeLimit ,int departmentId)
     {
         if (departmentId < 0)
             throw new LessThanMinimumException($"Id cannot be negative");
@@ -112,13 +112,13 @@ public class DepartmentService : IDepartmentService
           HRDbContext.Departments.Find(d => d.Name.ToLower() == newDepartmentName.ToLower());
         if (dbNewDepartment is not null && dbNewDepartment.Company==dbDepartment.Company)
             throw new AlreadyExistException($"{newDepartmentName.ToUpper()} department is already exist");
-        if (newEmployeeLimit < 4 && newEmployeeLimit< dbDepartment.currentEmployeeCount)
+        if (newEmployeeLimit < 4 || newEmployeeLimit< dbDepartment.currentEmployeeCount)
             throw new LessThanMinimumException($"Employee count cannot be less than 3 or current employee count");
        dbDepartment.Name = newDepartmentName;
         dbDepartment.EmployeeLimit=newEmployeeLimit;
         Console.WriteLine($"{newDepartmentName.ToUpper()} Department has been successfully updated");
 
-
+B
     }
 
     public void DeleteDepartment(int departmentId)

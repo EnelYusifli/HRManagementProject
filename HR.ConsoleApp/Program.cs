@@ -279,9 +279,10 @@ while (isContinue)
                     try
                     {
                         Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.WriteLine($"Departments:");
                         foreach (var department in HRDbContext.Departments)
                         {
-                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name.ToUpper()}  \n Company: {department.CompanyName.ToUpper()}\n \n");
+                            Console.WriteLine($"Id: {department.Id}\n Name: {department.Name.ToUpper()}  \n Company: {department.CompanyName.ToUpper()}\n \n");
                         }
                         Console.ResetColor();
 
@@ -315,7 +316,7 @@ while (isContinue)
                         foreach (var employee in HRDbContext.Employees)
                         {
                             Console.WriteLine($"Id:{employee.Id}/ Full Name:{employee.Name.ToUpper()} {employee.Surname.ToUpper()}\n" +
-                                $"Company:{employee.Company.Name.ToUpper()}/ Department:{employee.Department.Name.ToUpper()}/Position:{employee.Position.ToUpper()}\n\n");
+                                $"Company:{employee.Company.Name.ToUpper()}/ Department:{employee.Department.Name.ToUpper()}/ Position:{employee.Position.ToUpper()}\n\n");
                         }
                         Console.ResetColor();
                         Console.WriteLine("Enter Employee Id:");
