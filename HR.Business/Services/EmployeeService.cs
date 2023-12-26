@@ -65,10 +65,30 @@ public class EmployeeService : IEmployeeService
         if (employee.Company == department.Company)
         {
             employee.Salary = newSalary;
+            Console.WriteLine("Salary is updated");
         }
         else 
             throw new NotFoundException($"Employee {employee.Name} cannot be found in Company ");
     }
+    public void UpdatePosition(int employeeId,string? newPosition)
+    {
+        if (employeeId < 0)
+            throw new LessThanMinimumException($"Id cannot be negative");
+        if (String.IsNullOrEmpty(newPosition))
+            throw new ArgumentNullException();
+        Employee? employee =
+           HRDbContext.Employees.Find(e => e.Id == employeeId);
+        if (employee is null)
+            throw new NotFoundException("Employee cannot be found");
+        if (newPosition == employee.Position)
+            throw new AlreadyExistException($"Employee's position is already {newPosition.ToUpper()}");
+        employee.Position=newPosition;
+        Console.WriteLine("Position of employee is updated successfully");
+
+
+    }
+
+
     public void DeleteEmployee(int employeeId)
     {
         if (employeeId < 0)
@@ -88,4 +108,5 @@ public class EmployeeService : IEmployeeService
             throw new NotFoundException($"Employee cannot be found");
         }
     }
+
 }

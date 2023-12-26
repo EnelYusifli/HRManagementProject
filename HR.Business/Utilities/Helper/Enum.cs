@@ -15,6 +15,7 @@ public enum ConsoleApp
     //employee
     CreateEmployee,
     UpdateSalary,
+    UpdatePosition,
     DeleteEmployee
 
 }

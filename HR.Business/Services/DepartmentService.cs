@@ -91,7 +91,7 @@ public class DepartmentService : IDepartmentService
             {
                 if (employee.DepartmentId == dbDepartment.Id)
                 {
-                    Console.WriteLine($"Employees:\n Id: {employee.Id}\n Full Name: {employee.Name.ToUpper()} {employee.Surname.ToUpper()}\n Position: {employee.Position.ToUpper()}\n \n");
+                    Console.WriteLine($"Employees:\n Id: {employee.Id}\n Full Name: {employee.Name.ToUpper()} {employee.Surname.ToUpper()}\n Position: {employee.Position.ToUpper()} \n Salary: {employee.Salary}\n \n");
                 }
             }
         }
@@ -120,6 +120,7 @@ public class DepartmentService : IDepartmentService
 
 
     }
+
     public void DeleteDepartment(int departmentId)
     {
         if (departmentId < 0)
