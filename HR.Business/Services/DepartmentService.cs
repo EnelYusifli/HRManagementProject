@@ -114,6 +114,30 @@ public class DepartmentService : IDepartmentService
 
 
     }
+    public void DeleteDepartment(int departmentId)
+    {
+        if (departmentId < 0)
+            throw new LessThanMinimumException($"Id cannot be negative");
+
+        Department? dbDepartment =
+            HRDbContext.Departments.Find(d => d.Id == departmentId);
+
+        if (dbDepartment is not null)
+        {
+            bool hasEmployee = HRDbContext.Employees.Any(e => e.DepartmentId == dbDepartment.Id);
+            if (hasEmployee)
+                throw new NotFoundException($"Cannot delete Department as it has associated employees");
+            else
+            {
+                HRDbContext.Departments.Remove(dbDepartment);
+                Console.WriteLine($"Department has been successfully deleted");
+            }
+        }
+        else
+        {
+            throw new NotFoundException($"Department cannot be found");
+        }
+    }
     public Department? FindDepartmentByName(string? departmentName)
     {
         if (String.IsNullOrEmpty(departmentName))

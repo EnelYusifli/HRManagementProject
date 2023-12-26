@@ -22,12 +22,13 @@ while (isContinue)
     Console.WriteLine("4)Create Department");
     Console.WriteLine("5)Transfer Employee To Department");
     Console.WriteLine("6)Update Department");
-    Console.WriteLine("7)Get Department Employee \n");
+    Console.WriteLine("7)Get Department Employee ");
+    Console.WriteLine("8)Delete Department");
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.WriteLine("Employee: \n");
     Console.ResetColor();
-    Console.WriteLine("8)Create Employee");
-    Console.WriteLine("9)Update The Salary Of An Employee\n");
+    Console.WriteLine("9)Create Employee");
+    Console.WriteLine("10)Update The Salary Of An Employee\n");
     Console.WriteLine("0)Exit");
     Console.ForegroundColor = ConsoleColor.Cyan;
     Console.WriteLine("\n Choose an option(with a number) :)\n");
@@ -37,7 +38,7 @@ while (isContinue)
     bool isInt = int.TryParse(option, out intOption);
     if (isInt)
     {
-        if (intOption >= 0 && intOption <= 8)
+        if (intOption >= 0 && intOption <= 11)
         {
             switch (intOption)
             {
@@ -215,6 +216,29 @@ while (isContinue)
                         Console.ResetColor();
                     }
                     break;
+                case (int)ConsoleApp.DeleteDepartment:
+                    try
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        foreach (var department in HRDbContext.Departments)
+                        {
+                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name.ToUpper()}  \n Company: {department.CompanyName.ToUpper()}\n \n");
+                        }
+                        Console.ResetColor();
+                        Console.WriteLine("Enter Department Id:");
+                        int departmentId = Convert.ToInt32(Console.ReadLine());
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        departmentService.DeleteDepartment(departmentId);
+                        Console.ResetColor();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine(ex.Message);
+                        Console.ResetColor();
+                    }
+                    break;
+
                 case (int)ConsoleApp.CreateEmployee:
                     try
                     {

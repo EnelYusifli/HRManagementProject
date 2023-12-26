@@ -26,4 +26,9 @@ public class Employee:IEntity
         Position = position;
         IsDeleted = false;
     }
+    //public override string ToString()
+    //{
+    //    // return "Person: " + Name + " " + Age;
+    //    return $"ID: {Id} / Full Name: {Name} {Surname} \n ";
+    //}
 }

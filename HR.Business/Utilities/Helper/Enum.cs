@@ -11,6 +11,7 @@ public enum ConsoleApp
     TransferEmployeeToDepartment,
     UpdateDepartment,
     GetDepartmentEmployees,
+    DeleteDepartment,
     //employee
     CreateEmployee,
     UpdateSalary

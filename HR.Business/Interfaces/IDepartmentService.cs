@@ -8,5 +8,6 @@ public interface IDepartmentService
     void TransferEmployeeToDepartment(int departmentName,int employeeId);
     void UpdateDepartment(string? newDepartmentName, int newEmployeeLimit, int departmentId);
     void GetDepartmentEmployees(int departmentId);
+    public void DeleteDepartment(int departmentId);
     Department? FindDepartmentByName(string? departmentName);
 }
