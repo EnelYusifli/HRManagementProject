@@ -2,20 +2,23 @@
 using HR.Business.Utilities.Helper;
 using HR.DataAccess.Context;
 
-Console.ForegroundColor = ConsoleColor.Yellow;
+Console.ForegroundColor = ConsoleColor.Cyan;
 Console.WriteLine("Welcome!");
+Console.ResetColor();
 bool isContinue = true;
 while (isContinue)
 {
     CompanyService companyService = new();
     DepartmentService departmentService = new();
     EmployeeService employeeService = new();
+    Console.WriteLine("--------------------------------------");
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.WriteLine("Company: \n");
     Console.ResetColor();
     Console.WriteLine("1)Create Company");
     Console.WriteLine("2)Get All Departments In Company");
     Console.WriteLine("3)Delete Company\n");
+    Console.WriteLine("--------------------------------------");
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.WriteLine("Department: \n");
     Console.ResetColor();
@@ -23,15 +26,17 @@ while (isContinue)
     Console.WriteLine("5)Transfer Employee To Department");
     Console.WriteLine("6)Update Department");
     Console.WriteLine("7)Get Department Employee ");
-    Console.WriteLine("8)Delete Department");
+    Console.WriteLine("8)Delete Department \n");
+    Console.WriteLine("--------------------------------------");
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.WriteLine("Employee: \n");
     Console.ResetColor();
     Console.WriteLine("9)Create Employee");
     Console.WriteLine("10)Update The Salary Of An Employee\n");
+    Console.WriteLine("--------------------------------------");
     Console.WriteLine("0)Exit");
-    Console.ForegroundColor = ConsoleColor.Cyan;
-    Console.WriteLine("\n Choose an option(with a number) :)\n");
+    Console.ForegroundColor = ConsoleColor.DarkCyan;
+    Console.WriteLine("\n Choose an option(as number) :)\n");
     Console.ResetColor();
     string? option = Console.ReadLine();
     int intOption;

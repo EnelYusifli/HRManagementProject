@@ -20,4 +20,8 @@ public class Department:IEntity
         CompanyName = company;
         currentEmployeeCount = 0;
     }
+    public override string ToString()
+    {
+        return $"ID: {Id} /Name: {Name.ToUpper()} / Company: {CompanyName.ToUpper()} \n ";
+    }
 }

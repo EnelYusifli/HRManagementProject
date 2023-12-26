@@ -13,4 +13,8 @@ public class Company : IEntity
         Id = id++;
         Name = name;
     }
+    public override string ToString()
+    {
+        return $"ID: {Id} /Name: {Name.ToUpper()} \n ";
+    }
 }
