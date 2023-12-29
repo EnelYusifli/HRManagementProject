@@ -98,7 +98,7 @@ public class DepartmentService : IDepartmentService
         else throw new NotFoundException($"Department cannot be found");
 
     }
-    public void UpdateDepartment( string? newDepartmentName, int newEmployeeLimit ,int departmentId)
+    public void UpdateDepartment( string? newDepartmentName,string? newDescription, int newEmployeeLimit ,int departmentId)
     {
         if (departmentId < 0)
             throw new LessThanMinimumException($"Id cannot be negative");
@@ -115,6 +115,7 @@ public class DepartmentService : IDepartmentService
         if (newEmployeeLimit < 4 || newEmployeeLimit< dbDepartment.currentEmployeeCount)
             throw new LessThanMinimumException($"Employee count cannot be less than 3 or current employee count");
        dbDepartment.Name = newDepartmentName;
+        dbDepartment.Description = newDescription;
         dbDepartment.EmployeeLimit=newEmployeeLimit;
         Console.WriteLine($"{newDepartmentName.ToUpper()} Department has been successfully updated");
 

@@ -242,10 +242,12 @@ while (isContinue)
                         int departmentId = Convert.ToInt32(Console.ReadLine());
                         Console.WriteLine("Enter New Name For Department:");
                         string? newDepartmentName = Console.ReadLine();
+                        Console.WriteLine("Enter New Description For Department:");
+                        string? newDescription = Console.ReadLine();
                         Console.WriteLine($"Enter New Employee Limit:");
                         int newEmployeeLimit = Convert.ToInt32(Console.ReadLine());
                         Console.ForegroundColor = ConsoleColor.Green;
-                        departmentService.UpdateDepartment(newDepartmentName, newEmployeeLimit, departmentId);
+                        departmentService.UpdateDepartment(newDepartmentName, newDescription,newEmployeeLimit, departmentId);
                         Console.ResetColor();
                     }
                     catch (Exception ex)
