@@ -37,7 +37,8 @@ public class CompanyService : ICompanyService
                 if (department.Company.Name.ToLower() == dbCompany.Name.ToLower())
                 {
                     counter++;
-                Console.WriteLine($"{department.Id}){department.Name.ToUpper()} Department\n");
+                Console.WriteLine($"{department.Id}){department.Name.ToUpper()} Department\n" +
+                    $"Employee Limit:{department.EmployeeLimit}/ Current Employee Count:{department.currentEmployeeCount}");
                 }
             }
                if(counter==0) Console.WriteLine($"{companyName} company does not have any department");

@@ -47,7 +47,7 @@ while (isContinue)
     bool isInt = int.TryParse(option, out intOption);
     if (isInt)
     {
-        if (intOption >= 0 && intOption <= 13)
+        if (intOption >= 0 && intOption <= 14)
         {
             switch (intOption)
             {
