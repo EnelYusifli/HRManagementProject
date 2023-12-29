@@ -17,7 +17,7 @@ public class CompanyService : ICompanyService
              HRDbContext.Companies.Find(c => c.Name.ToLower() == companyName.ToLower());
         if (dbCompany is not null)
             throw new AlreadyExistException($"{dbCompany.Name.ToUpper()} Company is already exist");
-        Company company = new(companyName);
+        Company company = new(companyName, companyDescription);
         HRDbContext.Companies.Add(company);
         Console.WriteLine($"The new company- {company.Name.ToUpper()} has been successfully created \n");
     }
@@ -73,6 +73,24 @@ public class CompanyService : ICompanyService
             throw new ArgumentNullException();
         return HRDbContext.Companies.Find(c => c.Name.ToLower() == companyName.ToLower());
     }
+    public void UpdateCompany(string? companyName, string? newCompanyName, string? newDescription)
+    {
+        if (String.IsNullOrEmpty(companyName))
+            throw new ArgumentNullException();
+        if (String.IsNullOrEmpty(newCompanyName))
+            throw new ArgumentNullException();
+        Company? dbCompany =
+            HRDbContext.Companies.Find(c => c.Name.ToLower() == companyName.ToLower());
+        if (dbCompany is null)
+            throw new NotFoundException($"Company cannot be found");
+        Company? dbNewCompany =
+            HRDbContext.Companies.Find(c => c.Name.ToLower() == newCompanyName.ToLower());
+        if (dbNewCompany is not null )
+            throw new AlreadyExistException($"{newCompanyName.ToUpper()} Company is already exist");
+        dbCompany.Name = newCompanyName;
+        dbCompany.Description = newDescription;
+        Console.WriteLine($"{newCompanyName.ToUpper()} Company has been successfully updated");
+    }
     public void DeleteCompany(string? companyName)
     {
         if (String.IsNullOrEmpty(companyName))
@@ -98,5 +116,5 @@ public class CompanyService : ICompanyService
         }
     }
 
-    
+   
 }

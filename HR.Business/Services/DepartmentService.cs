@@ -33,7 +33,7 @@ public class DepartmentService : IDepartmentService
          throw new AlreadyExistException($"{dbDepartment.Name.ToUpper()} Department is already exist");
         if (employeeLimit < 4)
          throw new LessThanMinimumException($"The {departmentName.ToUpper()} department should have at least 4 employees ");
-        Department department = new(departmentName, employeeLimit, companyId);
+        Department department = new(departmentName, employeeLimit, companyId, departmentDescription);
         department.Company= dbCompany;
         HRDbContext.Departments.Add(department);
         Console.WriteLine($"The new department- {department.Name.ToUpper()} has been successfully created \n");

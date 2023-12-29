@@ -18,24 +18,25 @@ while (isContinue)
     Console.WriteLine("1)Create Company");
     Console.WriteLine("2)Get All Departments In Company");
     Console.WriteLine("3)Get All Employees In Company");
-    Console.WriteLine("4)Delete Company\n");
+    Console.WriteLine("4)Update Company");
+    Console.WriteLine("5)Delete Company\n");
     Console.WriteLine("--------------------------------------");
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.WriteLine("Department: \n");
     Console.ResetColor();
-    Console.WriteLine("5)Create Department");
-    Console.WriteLine("6)Transfer Employee To Department");
-    Console.WriteLine("7)Update Department");
-    Console.WriteLine("8)Get Department Employee ");
-    Console.WriteLine("9)Delete Department \n");
+    Console.WriteLine("6)Create Department");
+    Console.WriteLine("7)Transfer Employee To Department");
+    Console.WriteLine("8)Update Department");
+    Console.WriteLine("9)Get Department Employee ");
+    Console.WriteLine("10)Delete Department \n");
     Console.WriteLine("--------------------------------------");
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.WriteLine("Employee: \n");
     Console.ResetColor();
-    Console.WriteLine("10)Create Employee");
-    Console.WriteLine("11)Update The Salary Of An Employee");
-    Console.WriteLine("12)Update The Position Of An Employee");
-    Console.WriteLine("13)Delete Employee");
+    Console.WriteLine("11)Create Employee");
+    Console.WriteLine("12)Update The Salary Of An Employee");
+    Console.WriteLine("13)Update The Position Of An Employee");
+    Console.WriteLine("14)Delete Employee");
     Console.WriteLine("--------------------------------------");
     Console.WriteLine("0)Exit");
     Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -105,6 +106,34 @@ while (isContinue)
                         string? companyName = Console.ReadLine();
                         Console.ForegroundColor = ConsoleColor.Green;
                         companyService.GetAllEmployees(companyName);
+                        Console.ResetColor();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine(ex.Message);
+                        Console.ResetColor();
+                    }
+                    break;
+                case (int)ConsoleApp.UpdateCompany:
+                    try
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.WriteLine("Companies:\n");
+                        foreach (var company in HRDbContext.Companies)
+                        {
+                            Console.WriteLine($"{company.Name.ToUpper()}\n \n");
+                        }
+                        Console.ResetColor();
+
+                        Console.WriteLine("Enter Company Name:");
+                        string? companyName = Console.ReadLine();
+                        Console.WriteLine("Enter New Name For Company:");
+                        string? newCompanyName = Console.ReadLine();
+                        Console.WriteLine("Enter New Description For Company:");
+                        string? newDescription = Console.ReadLine();
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        companyService.UpdateCompany(companyName, newCompanyName, newDescription);
                         Console.ResetColor();
                     }
                     catch (Exception ex)
@@ -201,9 +230,11 @@ while (isContinue)
                     try
                     {
                         Console.ForegroundColor = ConsoleColor.Blue;
+
+                        Console.WriteLine("Departments:\n");
                         foreach (var department in HRDbContext.Departments)
                         {
-                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name.ToUpper()} \n Company:{department.Company.Name.ToUpper()}\n \n");
+                            Console.WriteLine($"Id: {department.Id}\n Name: {department.Name.ToUpper()} \n Company:{department.Company.Name.ToUpper()}\n \n");
                         }
                         Console.ResetColor();
 
