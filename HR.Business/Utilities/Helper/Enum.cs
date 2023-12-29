@@ -5,6 +5,7 @@ public enum ConsoleApp
     //company
     CreateCompany=1,
     GetAllDepartments,
+    GetAllEmployees,
     DeleteCompany,
     //department
     CreateDepartment,

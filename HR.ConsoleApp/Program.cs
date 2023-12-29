@@ -17,24 +17,25 @@ while (isContinue)
     Console.ResetColor();
     Console.WriteLine("1)Create Company");
     Console.WriteLine("2)Get All Departments In Company");
-    Console.WriteLine("3)Delete Company\n");
+    Console.WriteLine("3)Get All Employees In Company");
+    Console.WriteLine("4)Delete Company\n");
     Console.WriteLine("--------------------------------------");
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.WriteLine("Department: \n");
     Console.ResetColor();
-    Console.WriteLine("4)Create Department");
-    Console.WriteLine("5)Transfer Employee To Department");
-    Console.WriteLine("6)Update Department");
-    Console.WriteLine("7)Get Department Employee ");
-    Console.WriteLine("8)Delete Department \n");
+    Console.WriteLine("5)Create Department");
+    Console.WriteLine("6)Transfer Employee To Department");
+    Console.WriteLine("7)Update Department");
+    Console.WriteLine("8)Get Department Employee ");
+    Console.WriteLine("9)Delete Department \n");
     Console.WriteLine("--------------------------------------");
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.WriteLine("Employee: \n");
     Console.ResetColor();
-    Console.WriteLine("9)Create Employee");
-    Console.WriteLine("10)Update The Salary Of An Employee");
-    Console.WriteLine("11)Update The Position Of An Employee");
-    Console.WriteLine("12)Delete Employee");
+    Console.WriteLine("10)Create Employee");
+    Console.WriteLine("11)Update The Salary Of An Employee");
+    Console.WriteLine("12)Update The Position Of An Employee");
+    Console.WriteLine("13)Delete Employee");
     Console.WriteLine("--------------------------------------");
     Console.WriteLine("0)Exit");
     Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -45,7 +46,7 @@ while (isContinue)
     bool isInt = int.TryParse(option, out intOption);
     if (isInt)
     {
-        if (intOption >= 0 && intOption <= 12)
+        if (intOption >= 0 && intOption <= 13)
         {
             switch (intOption)
             {
@@ -90,6 +91,29 @@ while (isContinue)
                         Console.ResetColor();
                     }
                     break;
+                case (int)ConsoleApp.GetAllEmployees:
+                    try
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                        Console.WriteLine("Companies:\n");
+                        foreach (var company in HRDbContext.Companies)
+                        {
+                            Console.WriteLine(company.Name.ToUpper());
+                        }
+                        Console.ResetColor();
+                        Console.WriteLine("\n Enter Company Name:");
+                        string? companyName = Console.ReadLine();
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        companyService.GetAllEmployees(companyName);
+                        Console.ResetColor();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine(ex.Message);
+                        Console.ResetColor();
+                    }
+                    break;
                 case (int)ConsoleApp.DeleteCompany:
                     try
                     {
@@ -120,7 +144,6 @@ while (isContinue)
                         string? departmentName = Console.ReadLine();
                         Console.WriteLine("Enter Department Description:");
                         string? departmentDescription = Console.ReadLine();
-                        Console.WriteLine("Enter Company Id:\n");
                         Console.ForegroundColor = ConsoleColor.DarkMagenta;
                         Console.WriteLine("Companies:\n");
                         foreach (var company in HRDbContext.Companies)
@@ -128,6 +151,7 @@ while (isContinue)
                             Console.WriteLine($"Id: {company.Id}\n Name: {company.Name.ToUpper()}\n \n");
                         }
                         Console.ResetColor();
+                        Console.WriteLine("Enter Company Id:\n");
                         int companyId = Convert.ToInt32(Console.ReadLine());
                         Console.WriteLine("Enter Employee Limit");
                         int employeeLimit = Convert.ToInt32(Console.ReadLine());

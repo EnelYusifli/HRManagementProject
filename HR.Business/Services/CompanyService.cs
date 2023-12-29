@@ -44,28 +44,29 @@ public class CompanyService : ICompanyService
         }
         else throw new NotFoundException($"{companyName.ToUpper()} Company cannot be found");
     }
-    //public void GetAllEmployees(string? companyName)
-    //{
-    //    int counter = 0;
-    //    if (String.IsNullOrEmpty(companyName))
-    //        throw new ArgumentNullException();
-    //    Company? dbCompany =
-    //        HRDbContext.Companies.Find(c => c.Name.ToLower() == companyName.ToLower());
-    //    if (dbCompany is not null)
-    //    {
-    //        Console.WriteLine($"Employees in {companyName.ToUpper()} Company:");
-    //        foreach (var employee in HRDbContext.Employees)
-    //        {
-    //            if (employee.Company.Name.ToLower() == dbCompany.Name.ToLower())
-    //            {
-    //                counter++;
-    //                Console.WriteLine($"Id:{employee.Id}/Full Name:{employee.Name.ToUpper()} {employee.Surname.ToUpper()}\n");
-    //            }
-    //        }
-    //        if (counter == 0) Console.WriteLine($"{companyName} company does not have any department");
-    //    }
-    //    else throw new NotFoundException($"{companyName.ToUpper()} Company cannot be found");
-    //}
+    public void GetAllEmployees(string? companyName)
+    {
+        int counter = 0;
+        if (String.IsNullOrEmpty(companyName))
+            throw new ArgumentNullException();
+        Company? dbCompany =
+            HRDbContext.Companies.Find(c => c.Name.ToLower() == companyName.ToLower());
+        if (dbCompany is not null)
+        {
+            Console.WriteLine($"Employees in {companyName.ToUpper()} Company:\n");
+            foreach (var employee in HRDbContext.Employees)
+            {
+                if (employee.Company.Name.ToLower() == dbCompany.Name.ToLower())
+                {
+                    counter++;
+                    Console.WriteLine($"Id:{employee.Id}/Full Name:{employee.Name.ToUpper()} {employee.Surname.ToUpper()}\n" +
+                        $"Department:{employee.Department.Name.ToUpper()}/ Position:{employee.Position.ToUpper()}\n\n");
+                }
+            }
+            if (counter == 0) Console.WriteLine($"{companyName} company does not have any department");
+        }
+        else throw new NotFoundException($"{companyName.ToUpper()} Company cannot be found");
+    }
     public Company? FindCompanyByName(string? companyName)
     {
         if (String.IsNullOrEmpty(companyName))
