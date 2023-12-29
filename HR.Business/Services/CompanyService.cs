@@ -92,6 +92,13 @@ public class CompanyService : ICompanyService
         dbCompany.Description = newDescription;
         Console.WriteLine($"{newCompanyName.ToUpper()} Company has been successfully updated");
     }
+    public void ShowAllCompanies()
+    {
+        foreach (var company in HRDbContext.Companies)
+        {
+            Console.WriteLine($"{company.Id}) {company.Name.ToUpper()}");
+        }
+    }
     public void DeleteCompany(string? companyName)
     {
         if (String.IsNullOrEmpty(companyName))
@@ -117,5 +124,5 @@ public class CompanyService : ICompanyService
         }
     }
 
-   
+    
 }

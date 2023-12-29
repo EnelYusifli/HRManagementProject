@@ -9,6 +9,7 @@ public interface ICompanyService
     void GetAllEmployees(string? companyName);
     Company? FindCompanyByName(string? companyName);
     void UpdateCompany(string? companyName,string? newCompanyName,string? newDescription);
+    void ShowAllCompanies();
     void DeleteCompany(string? companyName);
 
 }

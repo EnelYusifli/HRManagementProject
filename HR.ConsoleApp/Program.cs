@@ -19,24 +19,25 @@ while (isContinue)
     Console.WriteLine("2)Get All Departments In Company");
     Console.WriteLine("3)Get All Employees In Company");
     Console.WriteLine("4)Update Company");
-    Console.WriteLine("5)Delete Company\n");
+    Console.WriteLine("5)Show All Companies");
+    Console.WriteLine("6)Delete Company\n");
     Console.WriteLine("--------------------------------------");
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.WriteLine("Department: \n");
     Console.ResetColor();
-    Console.WriteLine("6)Create Department");
-    Console.WriteLine("7)Transfer Employee To Department");
-    Console.WriteLine("8)Update Department");
-    Console.WriteLine("9)Get Department Employee ");
-    Console.WriteLine("10)Delete Department \n");
+    Console.WriteLine("7)Create Department");
+    Console.WriteLine("8)Transfer Employee To Department");
+    Console.WriteLine("9)Update Department");
+    Console.WriteLine("10)Get Department Employee ");
+    Console.WriteLine("11)Delete Department \n");
     Console.WriteLine("--------------------------------------");
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.WriteLine("Employee: \n");
     Console.ResetColor();
-    Console.WriteLine("11)Create Employee");
-    Console.WriteLine("12)Update The Salary Of An Employee");
-    Console.WriteLine("13)Update The Position Of An Employee");
-    Console.WriteLine("14)Delete Employee");
+    Console.WriteLine("12)Create Employee");
+    Console.WriteLine("13)Update The Salary Of An Employee");
+    Console.WriteLine("14)Update The Position Of An Employee");
+    Console.WriteLine("15)Delete Employee");
     Console.WriteLine("--------------------------------------");
     Console.WriteLine("0)Exit");
     Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -47,7 +48,7 @@ while (isContinue)
     bool isInt = int.TryParse(option, out intOption);
     if (isInt)
     {
-        if (intOption >= 0 && intOption <= 14)
+        if (intOption >= 0 && intOption <= 15)
         {
             switch (intOption)
             {
@@ -142,6 +143,11 @@ while (isContinue)
                         Console.WriteLine(ex.Message);
                         Console.ResetColor();
                     }
+                    break;
+                case (int)ConsoleApp.ShowAllCompanies:
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    companyService.ShowAllCompanies();
+                    Console.ResetColor();
                     break;
                 case (int)ConsoleApp.DeleteCompany:
                     try
