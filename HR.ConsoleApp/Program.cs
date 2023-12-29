@@ -97,7 +97,7 @@ while (isContinue)
                         Console.WriteLine("Companies:\n");
                         foreach (var company in HRDbContext.Companies)
                         {
-                            Console.WriteLine($"{company.Name.ToUpper()} Company");
+                            Console.WriteLine($"{company.Name.ToUpper()}");
                         }
                         Console.ResetColor();
                         Console.WriteLine("Enter Company Name:");
@@ -120,19 +120,19 @@ while (isContinue)
                         string? departmentName = Console.ReadLine();
                         Console.WriteLine("Enter Department Description:");
                         string? departmentDescription = Console.ReadLine();
-                        Console.WriteLine("Enter Company of Department:\n");
+                        Console.WriteLine("Enter Company Id:\n");
                         Console.ForegroundColor = ConsoleColor.DarkMagenta;
                         Console.WriteLine("Companies:\n");
                         foreach (var company in HRDbContext.Companies)
                         {
-                            Console.WriteLine(company.Name.ToUpper());
+                            Console.WriteLine($"Id: {company.Id}\n Name: {company.Name.ToUpper()}\n \n");
                         }
                         Console.ResetColor();
-                        string? departmentCompany = Console.ReadLine();
+                        int companyId = Convert.ToInt32(Console.ReadLine());
                         Console.WriteLine("Enter Employee Limit");
                         int employeeLimit = Convert.ToInt32(Console.ReadLine());
                         Console.ForegroundColor = ConsoleColor.Green;
-                        departmentService.Create(departmentName, departmentDescription, departmentCompany, employeeLimit);
+                        departmentService.Create(departmentName, departmentDescription,companyId, employeeLimit);
                         Console.ResetColor();
                     }
                     catch (Exception ex)
@@ -156,7 +156,7 @@ while (isContinue)
                         Console.ForegroundColor = ConsoleColor.DarkYellow;
                         foreach (var department in HRDbContext.Departments)
                         {
-                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name.ToUpper()} \n Company:{department.CompanyName.ToUpper()}\n \n");
+                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name.ToUpper()} \n Company:{department.Company.Name.ToUpper()}\n \n");
                         }
                         Console.ResetColor();
                         Console.WriteLine("Enter New Department Id:");
@@ -179,7 +179,7 @@ while (isContinue)
                         Console.ForegroundColor = ConsoleColor.Blue;
                         foreach (var department in HRDbContext.Departments)
                         {
-                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name.ToUpper()} \n Company:{department.CompanyName.ToUpper()}\n \n");
+                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name.ToUpper()} \n Company:{department.Company.Name.ToUpper()}\n \n");
                         }
                         Console.ResetColor();
 
@@ -206,7 +206,7 @@ while (isContinue)
                         Console.ForegroundColor = ConsoleColor.Blue;
                         foreach (var department in HRDbContext.Departments)
                         {
-                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name.ToUpper()}  \n Company: {department.CompanyName.ToUpper()}\n \n");
+                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name.ToUpper()}  \n Company: {department.Company.Name.ToUpper()}\n \n");
                         }
                         Console.ResetColor();
                         Console.WriteLine("Enter Department Id:");
@@ -228,7 +228,7 @@ while (isContinue)
                         Console.ForegroundColor = ConsoleColor.DarkBlue;
                         foreach (var department in HRDbContext.Departments)
                         {
-                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name.ToUpper()}  \n Company: {department.CompanyName.ToUpper()}\n \n");
+                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name.ToUpper()}  \n Company: {department.Company.Name.ToUpper()}\n \n");
                         }
                         Console.ResetColor();
                         Console.WriteLine("Enter Department Id:");
@@ -259,7 +259,7 @@ while (isContinue)
                         Console.ForegroundColor = ConsoleColor.Blue;
                         foreach (var department in HRDbContext.Departments)
                         {
-                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name.ToUpper()}  \n Company: {department.CompanyName.ToUpper()}\n \n");
+                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name.ToUpper()}  \n Company: {department.Company.Name.ToUpper()}\n \n");
                         }
                         Console.ResetColor();
                         Console.WriteLine("Enter Department Id:\n");
@@ -282,7 +282,7 @@ while (isContinue)
                         Console.WriteLine($"Departments:");
                         foreach (var department in HRDbContext.Departments)
                         {
-                            Console.WriteLine($"Id: {department.Id}\n Name: {department.Name.ToUpper()}  \n Company: {department.CompanyName.ToUpper()}\n \n");
+                            Console.WriteLine($"Id: {department.Id}\n Name: {department.Name.ToUpper()}  \n Company: {department.Company.Name.ToUpper()}\n \n");
                         }
                         Console.ResetColor();
 

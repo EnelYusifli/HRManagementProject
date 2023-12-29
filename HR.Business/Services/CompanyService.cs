@@ -2,7 +2,6 @@
 using HR.Business.Utilities.Exceptions;
 using HR.Core.Entities;
 using HR.DataAccess.Context;
-using System.Xml.Linq;
 
 
 namespace HR.Business.Services;
@@ -35,7 +34,7 @@ public class CompanyService : ICompanyService
             Console.WriteLine($"Departments in {companyName.ToUpper()} Company:");
             foreach ( var department in HRDbContext.Departments)
             {
-                if (department.CompanyName.ToLower() == dbCompany.Name.ToLower())
+                if (department.Company.Name.ToLower() == dbCompany.Name.ToLower())
                 {
                     counter++;
                 Console.WriteLine($"{department.Id}){department.Name.ToUpper()} Department\n");
@@ -45,6 +44,28 @@ public class CompanyService : ICompanyService
         }
         else throw new NotFoundException($"{companyName.ToUpper()} Company cannot be found");
     }
+    //public void GetAllEmployees(string? companyName)
+    //{
+    //    int counter = 0;
+    //    if (String.IsNullOrEmpty(companyName))
+    //        throw new ArgumentNullException();
+    //    Company? dbCompany =
+    //        HRDbContext.Companies.Find(c => c.Name.ToLower() == companyName.ToLower());
+    //    if (dbCompany is not null)
+    //    {
+    //        Console.WriteLine($"Employees in {companyName.ToUpper()} Company:");
+    //        foreach (var employee in HRDbContext.Employees)
+    //        {
+    //            if (employee.Company.Name.ToLower() == dbCompany.Name.ToLower())
+    //            {
+    //                counter++;
+    //                Console.WriteLine($"Id:{employee.Id}/Full Name:{employee.Name.ToUpper()} {employee.Surname.ToUpper()}\n");
+    //            }
+    //        }
+    //        if (counter == 0) Console.WriteLine($"{companyName} company does not have any department");
+    //    }
+    //    else throw new NotFoundException($"{companyName.ToUpper()} Company cannot be found");
+    //}
     public Company? FindCompanyByName(string? companyName)
     {
         if (String.IsNullOrEmpty(companyName))
@@ -61,7 +82,7 @@ public class CompanyService : ICompanyService
 
         if (dbCompany is not null)
         {
-            bool hasDepartments = HRDbContext.Departments.Any(d => d.CompanyName.ToLower() == dbCompany.Name.ToLower());
+            bool hasDepartments = HRDbContext.Departments.Any(d => d.Company.Name.ToLower() == dbCompany.Name.ToLower());
             if (hasDepartments)
                 throw new NotFoundException($"Cannot delete {companyName.ToUpper()} Company as it has associated departments");
             else
@@ -75,4 +96,6 @@ public class CompanyService : ICompanyService
             throw new NotFoundException($"{companyName.ToUpper()} Company cannot be found");
         }
     }
+
+    
 }

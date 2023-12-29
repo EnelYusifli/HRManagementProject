@@ -8,20 +8,21 @@ public class Department:IEntity
     public string Name { get; set; }
     public int EmployeeLimit { get; set; }
     public Company? Company { get; set; }
-    public string CompanyName { get; set; }
+    public int CompanyId { get; set; }
     private static int id;
     public int currentEmployeeCount;
 
-    public Department(string name, int employeeLimit, string company)
+    public Department(string name, int employeeLimit, int companyId)
     {
         Id = id++;
         Name = name;
         EmployeeLimit = employeeLimit;
-        CompanyName = company;
+        CompanyId = companyId;
         currentEmployeeCount = 0;
+
     }
     public override string ToString()
     {
-        return $"ID: {Id} /Name: {Name.ToUpper()} / Company: {CompanyName.ToUpper()} \n ";
+        return $"ID: {Id} /Name: {Name.ToUpper()} / Company: {Company.Name.ToUpper()} \n ";
     }
 }

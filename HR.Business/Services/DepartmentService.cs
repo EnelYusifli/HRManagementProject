@@ -17,23 +17,23 @@ public class DepartmentService : IDepartmentService
         companyService = new CompanyService();
     }
     
-    public void Create(string? departmentName, string? departmentDescription, string? company, int employeeLimit)
+    public void Create(string? departmentName, string? departmentDescription, int companyId, int employeeLimit)
     {
         if (String.IsNullOrEmpty(departmentName))
-         throw new ArgumentNullException();
-        if (String.IsNullOrEmpty(company))
-         throw new ArgumentNullException();
+         throw new ArgumentNullException(); 
+        if (companyId < 0)
+            throw new LessThanMinimumException($"Id cannot be negative");
         Department? dbDepartment =
             HRDbContext.Departments.Find(d => d.Name.ToLower() == departmentName.ToLower());
         Company? dbCompany =
-            HRDbContext.Companies.Find(c => c.Name.ToLower() == company.ToLower());
+            HRDbContext.Companies.Find(c => c.Id == companyId);
         if (dbCompany is null)
-            throw new NotFoundException($"{company.ToUpper()} Company cannot be found");
-        if (dbDepartment is not null && dbDepartment.CompanyName==company)
+            throw new NotFoundException($"Company cannot be found");
+        if (dbDepartment is not null && dbDepartment.CompanyId== dbCompany.Id)
          throw new AlreadyExistException($"{dbDepartment.Name.ToUpper()} Department is already exist");
         if (employeeLimit < 4)
          throw new LessThanMinimumException($"The {departmentName.ToUpper()} department should have at least 4 employees ");
-        Department department = new(departmentName, employeeLimit, company);
+        Department department = new(departmentName, employeeLimit, companyId);
         department.Company= dbCompany;
         HRDbContext.Departments.Add(department);
         Console.WriteLine($"The new department- {department.Name.ToUpper()} has been successfully created \n");
@@ -64,14 +64,14 @@ public class DepartmentService : IDepartmentService
                     break;
                 }
             }
-            if (dbEmployee.DepartmentId != dbDepartment.Id && employeeDepartment.CompanyName == dbDepartment.CompanyName)
+            if (dbEmployee.DepartmentId != dbDepartment.Id && employeeDepartment.Company.Name == dbDepartment.Company.Name)
             {
                 dbEmployee.Department = dbDepartment;
                 dbEmployee.DepartmentId = dbDepartment.Id;
                 dbDepartment.currentEmployeeCount++;
                 Console.WriteLine($"The new employee - {dbEmployee.Name.ToUpper()} has been successfully added \n");
             }
-            else if (dbEmployee.DepartmentId == dbDepartment.Id && employeeDepartment.CompanyName == dbDepartment.CompanyName)
+            else if (dbEmployee.DepartmentId == dbDepartment.Id && employeeDepartment.Company.Name == dbDepartment.Company.Name)
             {
                 throw new AlreadyExistException($"Employee {dbEmployee.Name.ToUpper()} is already in {dbDepartment.Name.ToUpper()} Department");
             }
@@ -79,7 +79,7 @@ public class DepartmentService : IDepartmentService
         }
     }
 
-    public void GetDepartmentEmployees(int departmentId=-1)
+    public void GetDepartmentEmployees(int departmentId)
     {
         if (departmentId < 0)
             throw new LessThanMinimumException($"Id cannot be negative");
@@ -118,7 +118,7 @@ public class DepartmentService : IDepartmentService
         dbDepartment.EmployeeLimit=newEmployeeLimit;
         Console.WriteLine($"{newDepartmentName.ToUpper()} Department has been successfully updated");
 
-B
+
     }
 
     public void DeleteDepartment(int departmentId)
