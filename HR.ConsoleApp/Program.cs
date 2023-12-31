@@ -451,7 +451,7 @@ while (isContinue)
                         Console.ForegroundColor = ConsoleColor.DarkBlue;
                         foreach (var employee in HRDbContext.Employees)
                         {
-                            Console.WriteLine($"Id:{employee.Id}/Full Name: {employee.Name} {employee.Surname}\nPosition: {employee.Position}\n \n");
+                            Console.WriteLine($"Id:{employee.Id}/Full Name: {employee.Name.ToUpper()} {employee.Surname.ToUpper()}\nPosition: {employee.Position.ToUpper()}\n \n");
                         }
                         Console.ResetColor();
                         Console.WriteLine("Enter Employee Id:");

@@ -102,7 +102,7 @@ public class CompanyService : ICompanyService
     {
         foreach (var company in HRDbContext.Companies)
         {
-            Console.WriteLine($"{company.Id}) {company.Name.ToUpper()}");
+            Console.WriteLine($"{company.Id}) {company.Name.ToUpper()}\n Description:{company.Description} \n \n ");
         }
     }
     public void DeleteCompany(string? companyName)

@@ -91,9 +91,9 @@ public class EmployeeService : IEmployeeService
             HRDbContext.Employees.Find(e => e.Id == employeeId);
         if (dbEmployee is not null)
         {
+                dbEmployee.Department.currentEmployeeCount--;
                 HRDbContext.Employees.Remove(dbEmployee);
                 Console.WriteLine($"Employee has been successfully deleted");
-            
         }
         else
         {

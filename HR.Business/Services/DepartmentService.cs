@@ -2,7 +2,6 @@
 using HR.Business.Utilities.Exceptions;
 using HR.Core.Entities;
 using HR.DataAccess.Context;
-using System.Xml.Linq;
 
 namespace HR.Business.Services;
 
@@ -64,6 +63,8 @@ public class DepartmentService : IDepartmentService
                     break;
                 }
             }
+                if (dbDepartment.currentEmployeeCount == dbDepartment.EmployeeLimit)
+                    throw new AlreadyFullException($"{dbDepartment.Name.ToUpper()} Department is already full");
             if (dbEmployee.DepartmentId != dbDepartment.Id && employeeDepartment.Company.Name == dbDepartment.Company.Name)
             {
                 dbEmployee.Department = dbDepartment;
@@ -114,7 +115,7 @@ public class DepartmentService : IDepartmentService
         if (dbNewDepartment is not null && dbNewDepartment.Company==dbDepartment.Company)
             throw new AlreadyExistException($"{newDepartmentName.ToUpper()} department is already exist");
         if (newEmployeeLimit < 4 || newEmployeeLimit< dbDepartment.currentEmployeeCount)
-            throw new LessThanMinimumException($"Employee count cannot be less than 3 or current employee count");
+            throw new LessThanMinimumException($"Employee count cannot be less than 4 or current employee count");
        dbDepartment.Name = newDepartmentName;
         dbDepartment.Description = newDescription;
         dbDepartment.EmployeeLimit=newEmployeeLimit;
