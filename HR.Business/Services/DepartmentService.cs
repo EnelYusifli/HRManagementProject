@@ -2,9 +2,7 @@
 using HR.Business.Utilities.Exceptions;
 using HR.Core.Entities;
 using HR.DataAccess.Context;
-using System.Data.Common;
-using System.Diagnostics.Metrics;
-using System.Runtime.CompilerServices;
+using System.Xml.Linq;
 
 namespace HR.Business.Services;
 
@@ -35,6 +33,7 @@ public class DepartmentService : IDepartmentService
          throw new LessThanMinimumException($"The {departmentName.ToUpper()} department should have at least 4 employees ");
         Department department = new(departmentName, employeeLimit, companyId, departmentDescription);
         department.Company= dbCompany;
+        department.IsActive = true;
         HRDbContext.Departments.Add(department);
         Console.WriteLine($"The new department- {department.Name.ToUpper()} has been successfully created \n");
 
@@ -51,7 +50,8 @@ public class DepartmentService : IDepartmentService
             Department? dbDepartment = HRDbContext.Departments.Find(d => d.Id == departmentId);
             if (dbDepartment is null)
                 throw new NotFoundException($"Department cannot be found");
-
+            if (dbDepartment.IsActive == false && dbDepartment is not null)
+                throw new IsDeactiveException($"{dbDepartment.Name.ToUpper()} is deactive");
             Employee? dbEmployee = HRDbContext.Employees.Find(e => e.Id == employeeId);
             if (dbEmployee is null)
                 throw new NotFoundException($"Employee cannot be found");
@@ -72,9 +72,7 @@ public class DepartmentService : IDepartmentService
                 Console.WriteLine($"The new employee - {dbEmployee.Name.ToUpper()} has been successfully added \n");
             }
             else if (dbEmployee.DepartmentId == dbDepartment.Id && employeeDepartment.Company.Name == dbDepartment.Company.Name)
-            {
                 throw new AlreadyExistException($"Employee {dbEmployee.Name.ToUpper()} is already in {dbDepartment.Name.ToUpper()} Department");
-            }
             else throw new NotFoundException($"Employee cannot be found in company");
         }
     }
@@ -85,16 +83,17 @@ public class DepartmentService : IDepartmentService
             throw new LessThanMinimumException($"Id cannot be negative");
         Department? dbDepartment =
             HRDbContext.Departments.Find(d => d.Id == departmentId);
-        if (dbDepartment is not null)
+        if (dbDepartment is not null && dbDepartment.IsActive == true)
         {
             foreach (var employee in HRDbContext.Employees)
             {
                 if (employee.DepartmentId == dbDepartment.Id)
-                {
-                    Console.WriteLine($"Employees:\n Id: {employee.Id}\n Full Name: {employee.Name.ToUpper()} {employee.Surname.ToUpper()}\n Position: {employee.Position.ToUpper()} \n Salary: {employee.Salary}\n \n");
-                }
+                    Console.WriteLine($"Employees:\n Id: {employee.Id}\n Full Name: {employee.Name.ToUpper()} {employee.Surname.ToUpper()}\n " +
+                        $"Position: {employee.Position.ToUpper()} \n Salary: {employee.Salary}\n \n");
             }
         }
+        else if(dbDepartment.IsActive == false && dbDepartment is not null)
+            throw new IsDeactiveException($"{dbDepartment.Name.ToUpper()} is deactive");
         else throw new NotFoundException($"Department cannot be found");
 
     }
@@ -108,6 +107,8 @@ public class DepartmentService : IDepartmentService
           HRDbContext.Departments.Find(d => d.Id == departmentId);
         if (dbDepartment is null)
             throw new NotFoundException($"Department cannot be found");
+        if (dbDepartment.IsActive == false && dbDepartment is not null)
+            throw new IsDeactiveException($"{dbDepartment.Name.ToUpper()} is deactive");
         Department? dbNewDepartment =
           HRDbContext.Departments.Find(d => d.Name.ToLower() == newDepartmentName.ToLower());
         if (dbNewDepartment is not null && dbNewDepartment.Company==dbDepartment.Company)
@@ -118,10 +119,37 @@ public class DepartmentService : IDepartmentService
         dbDepartment.Description = newDescription;
         dbDepartment.EmployeeLimit=newEmployeeLimit;
         Console.WriteLine($"{newDepartmentName.ToUpper()} Department has been successfully updated");
-
-
+    }
+    public void ActivateDepartment(int departmentId)
+    {
+        if (departmentId < 0)
+            throw new LessThanMinimumException($"Id cannot be negative");
+        Department? dbDepartment =
+          HRDbContext.Departments.Find(d => d.Id == departmentId);
+        if (dbDepartment is null)
+            throw new NotFoundException($"Department cannot be found");
+        if (dbDepartment.IsActive == true)
+            throw new AlreadyExistException($"{dbDepartment.Name.ToUpper()} is already active");
+        else dbDepartment.IsActive = true;
+        Console.WriteLine($"{dbDepartment.Name} department has been activated.");
     }
 
+    public void DeactivateDepartment(int departmentId)
+    {
+        if (departmentId < 0)
+            throw new LessThanMinimumException($"Id cannot be negative");
+        Department? dbDepartment =
+          HRDbContext.Departments.Find(d => d.Id == departmentId);
+        if (dbDepartment is null)
+            throw new NotFoundException($"Department cannot be found");
+        if (dbDepartment.IsActive == false)
+            throw new AlreadyExistException($"{dbDepartment.Name.ToUpper()} is already deactive");
+        bool hasEmployee = HRDbContext.Employees.Any(e => e.DepartmentId == dbDepartment.Id);
+        if (hasEmployee)
+            throw new NotFoundException($"Cannot deactivate Department as it has associated employees");
+        else dbDepartment.IsActive = false;
+        Console.WriteLine($"{dbDepartment.Name.ToUpper()} department has been deactivated.");
+    }
     public void DeleteDepartment(int departmentId)
     {
         if (departmentId < 0)
@@ -134,7 +162,7 @@ public class DepartmentService : IDepartmentService
         {
             bool hasEmployee = HRDbContext.Employees.Any(e => e.DepartmentId == dbDepartment.Id);
             if (hasEmployee)
-                throw new NotFoundException($"Cannot delete Department as it has associated employees");
+                throw new NotEmptyException($"Cannot delete Department as it has associated employees");
             else
             {
                 HRDbContext.Departments.Remove(dbDepartment);
@@ -142,8 +170,6 @@ public class DepartmentService : IDepartmentService
             }
         }
         else
-        {
             throw new NotFoundException($"Department cannot be found");
-        }
     }
 }

@@ -8,5 +8,7 @@ public interface IDepartmentService
     void TransferEmployeeToDepartment(int departmentName,int employeeId);
     void UpdateDepartment(string? newDepartmentName, string? newDescription, int newEmployeeLimit, int departmentId);
     void GetDepartmentEmployees(int departmentId);
+    void ActivateDepartment(int departmentId);
+    void DeactivateDepartment(int departmentId);
     void DeleteDepartment(int departmentId);
 }

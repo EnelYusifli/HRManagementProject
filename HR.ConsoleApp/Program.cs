@@ -29,15 +29,17 @@ while (isContinue)
     Console.WriteLine("8)Transfer Employee To Department");
     Console.WriteLine("9)Update Department");
     Console.WriteLine("10)Get Department Employee ");
-    Console.WriteLine("11)Delete Department \n");
+    Console.WriteLine("11)Activate Department ");
+    Console.WriteLine("12)Deactivate Department ");
+    Console.WriteLine("13)Delete Department \n");
     Console.WriteLine("--------------------------------------");
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.WriteLine("Employee: \n");
     Console.ResetColor();
-    Console.WriteLine("12)Create Employee");
-    Console.WriteLine("13)Update The Salary Of An Employee");
-    Console.WriteLine("14)Update The Position Of An Employee");
-    Console.WriteLine("15)Delete Employee");
+    Console.WriteLine("14)Create Employee");
+    Console.WriteLine("15)Update The Salary Of An Employee");
+    Console.WriteLine("16)Update The Position Of An Employee");
+    Console.WriteLine("17)Delete Employee");
     Console.WriteLine("--------------------------------------");
     Console.WriteLine("0)Exit");
     Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -48,7 +50,7 @@ while (isContinue)
     bool isInt = int.TryParse(option, out intOption);
     if (isInt)
     {
-        if (intOption >= 0 && intOption <= 15)
+        if (intOption >= 0 && intOption <= 17)
         {
             switch (intOption)
             {
@@ -276,6 +278,52 @@ while (isContinue)
                         int departmentId = Convert.ToInt32(Console.ReadLine());
                         Console.ForegroundColor = ConsoleColor.Green;
                         departmentService.GetDepartmentEmployees(departmentId);
+                        Console.ResetColor();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine(ex.Message);
+                        Console.ResetColor();
+                    }
+                    break;
+
+                case (int)ConsoleApp.ActivateDepartment:
+                    try
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        foreach (var department in HRDbContext.Departments)
+                        {
+                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name.ToUpper()}  \n Company: {department.Company.Name.ToUpper()}\n \n");
+                        }
+                        Console.ResetColor();
+                        Console.WriteLine("Enter Department Id:");
+                        int departmentId = Convert.ToInt32(Console.ReadLine());
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        departmentService.ActivateDepartment(departmentId);
+                        Console.ResetColor();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine(ex.Message);
+                        Console.ResetColor();
+                    }
+                    break;
+
+                case (int)ConsoleApp.DeactivateDepartment:
+                    try
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        foreach (var department in HRDbContext.Departments)
+                        {
+                            Console.WriteLine($"Departments:\n Id: {department.Id}\n Name: {department.Name.ToUpper()}  \n Company: {department.Company.Name.ToUpper()}\n \n");
+                        }
+                        Console.ResetColor();
+                        Console.WriteLine("Enter Department Id:");
+                        int departmentId = Convert.ToInt32(Console.ReadLine());
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        departmentService.DeactivateDepartment(departmentId);
                         Console.ResetColor();
                     }
                     catch (Exception ex)

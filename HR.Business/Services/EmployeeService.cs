@@ -2,7 +2,6 @@
 using HR.Business.Utilities.Exceptions;
 using HR.Core.Entities;
 using HR.DataAccess.Context;
-using System.Data.Common;
 
 namespace HR.Business.Services;
 
@@ -15,9 +14,6 @@ public class EmployeeService : IEmployeeService
         departmentService = new DepartmentService();
     }
   
-   
-
-
     public void Create(string? employeeName, string? employeeSurname, int employeeSalary, int departmentId,string? position)
     {
         if (String.IsNullOrEmpty(employeeName))
@@ -26,15 +22,14 @@ public class EmployeeService : IEmployeeService
             throw new ArgumentNullException();
         if (String.IsNullOrEmpty(position))
             throw new ArgumentNullException();
-            
         if(employeeSalary <= 0) 
             throw new LessThanMinimumException($"Salary cannot be 0 or negative");
         if(departmentId < 0) 
-            throw new LessThanMinimumException($"Id cannot be negative");
-        
-        Department? dbDepartment = HRDbContext.Departments.Find(d => d.Id == departmentId);
+            throw new LessThanMinimumException($"Id cannot be negative");        Department? dbDepartment = HRDbContext.Departments.Find(d => d.Id == departmentId);
         if (dbDepartment is null)
             throw new NotFoundException($"Department cannot be found");
+        if (dbDepartment.IsActive == false && dbDepartment is not null)
+            throw new IsDeactiveException($"{dbDepartment.Name.ToUpper()} is deactive");
         if (dbDepartment.currentEmployeeCount == dbDepartment.EmployeeLimit)
             throw new AlreadyFullException($"{dbDepartment.Name.ToUpper()} Department is already full");
         Employee employee = new Employee(employeeName, employeeSurname, departmentId, employeeSalary, position);
@@ -43,7 +38,6 @@ public class EmployeeService : IEmployeeService
         HRDbContext.Employees.Add(employee);
         dbDepartment.currentEmployeeCount++;
         Console.WriteLine($"The new employee- {employee.Name.ToUpper()} has been successfully created \n");
-
     }
 
     public void UpdateSalary( int newSalary, int employeeId, int departmentId)
@@ -58,6 +52,8 @@ public class EmployeeService : IEmployeeService
         Department? department = HRDbContext.Departments.Find(d => d.Id == departmentId);
         if (department is null)
             throw new NotFoundException("Department cannot be found");
+        if (department.IsActive == false && department is not null)
+            throw new IsDeactiveException($"{department.Name.ToUpper()} is deactive");
         Employee? employee =
             HRDbContext.Employees.Find(e => e.Id == employeeId);
         if (employee is null)
@@ -84,8 +80,6 @@ public class EmployeeService : IEmployeeService
             throw new AlreadyExistException($"Employee's position is already {newPosition.ToUpper()}");
         employee.Position=newPosition;
         Console.WriteLine("Position of employee is updated successfully");
-
-
     }
 
 
@@ -93,10 +87,8 @@ public class EmployeeService : IEmployeeService
     {
         if (employeeId < 0)
             throw new LessThanMinimumException($"Id cannot be negative");
-
         Employee? dbEmployee =
             HRDbContext.Employees.Find(e => e.Id == employeeId);
-
         if (dbEmployee is not null)
         {
                 HRDbContext.Employees.Remove(dbEmployee);

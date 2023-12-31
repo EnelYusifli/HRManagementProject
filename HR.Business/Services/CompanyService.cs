@@ -25,6 +25,7 @@ public class CompanyService : ICompanyService
     public void GetAllDepartments(string? companyName)
     {
         int counter = 0;
+        string activeOrDeactive;
         if (String.IsNullOrEmpty(companyName))
             throw new ArgumentNullException();
         Company? dbCompany =
@@ -36,12 +37,17 @@ public class CompanyService : ICompanyService
             {
                 if (department.Company.Name.ToLower() == dbCompany.Name.ToLower())
                 {
+                    if (department.IsActive == true)
+                        activeOrDeactive = "active";
+                    else
+                        activeOrDeactive = "deactive";
                     counter++;
                 Console.WriteLine($"{department.Id}){department.Name.ToUpper()} Department\n" +
-                    $"Employee Limit:{department.EmployeeLimit}/ Current Employee Count:{department.currentEmployeeCount}");
+                    $"Status:{activeOrDeactive}/Employee Limit:{department.EmployeeLimit}/ " +
+                    $"Current Employee Count:{department.currentEmployeeCount}");
                 }
             }
-               if(counter==0) Console.WriteLine($"{companyName} company does not have any department");
+               if(counter==0) throw new NotFoundException($"{companyName} company does not have any department");
         }
         else throw new NotFoundException($"{companyName.ToUpper()} Company cannot be found");
     }
@@ -64,7 +70,7 @@ public class CompanyService : ICompanyService
                         $"Department:{employee.Department.Name.ToUpper()}/ Position:{employee.Position.ToUpper()}\n\n");
                 }
             }
-            if (counter == 0) Console.WriteLine($"{companyName} company does not have any department");
+            if (counter == 0) throw new NotFoundException($"{companyName} company does not have any employee");
         }
         else throw new NotFoundException($"{companyName.ToUpper()} Company cannot be found");
     }
@@ -111,7 +117,7 @@ public class CompanyService : ICompanyService
         {
             bool hasDepartments = HRDbContext.Departments.Any(d => d.Company.Name.ToLower() == dbCompany.Name.ToLower());
             if (hasDepartments)
-                throw new NotFoundException($"Cannot delete {companyName.ToUpper()} Company as it has associated departments");
+                throw new NotEmptyException($"Cannot delete {companyName.ToUpper()} Company as it has associated departments");
             else
             {
                 HRDbContext.Companies.Remove(dbCompany);
@@ -123,6 +129,4 @@ public class CompanyService : ICompanyService
             throw new NotFoundException($"{companyName.ToUpper()} Company cannot be found");
         }
     }
-
-    
 }

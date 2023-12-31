@@ -10,6 +10,7 @@ public class Department:IEntity
     public int EmployeeLimit { get; set; }
     public Company? Company { get; set; }
     public int CompanyId { get; set; }
+    public bool IsActive { get; set; }
     private static int id;
     public int currentEmployeeCount;
 
@@ -21,6 +22,7 @@ public class Department:IEntity
         CompanyId = companyId;
         currentEmployeeCount = 0;
         Description = description;
+        IsActive = true;
     }
     public override string ToString()
     {
