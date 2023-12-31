@@ -131,7 +131,7 @@ public class DepartmentService : IDepartmentService
         if (dbDepartment.IsActive == true)
             throw new AlreadyExistException($"{dbDepartment.Name.ToUpper()} is already active");
         else dbDepartment.IsActive = true;
-        Console.WriteLine($"{dbDepartment.Name} department has been activated.");
+        Console.WriteLine($"{dbDepartment.Name.ToUpper()} department has been activated.");
     }
 
     public void DeactivateDepartment(int departmentId)

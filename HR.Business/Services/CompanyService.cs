@@ -47,7 +47,7 @@ public class CompanyService : ICompanyService
                     $"Current Employee Count:{department.currentEmployeeCount}");
                 }
             }
-               if(counter==0) throw new NotFoundException($"{companyName} company does not have any department");
+               if(counter==0) throw new NotFoundException($"{companyName.ToUpper()} company does not have any department");
         }
         else throw new NotFoundException($"{companyName.ToUpper()} Company cannot be found");
     }
@@ -70,7 +70,7 @@ public class CompanyService : ICompanyService
                         $"Department:{employee.Department.Name.ToUpper()}/ Position:{employee.Position.ToUpper()}\n\n");
                 }
             }
-            if (counter == 0) throw new NotFoundException($"{companyName} company does not have any employee");
+            if (counter == 0) throw new NotFoundException($"{companyName.ToUpper()} company does not have any employee");
         }
         else throw new NotFoundException($"{companyName.ToUpper()} Company cannot be found");
     }
